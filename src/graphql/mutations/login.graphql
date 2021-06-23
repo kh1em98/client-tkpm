@@ -1,0 +1,17 @@
+mutation Login($input: LoginInput!) {
+  login(input: $input) {
+    __typename
+
+    ... on User {
+      ...UserBrief
+    }
+
+    ... on Error {
+      ...ErrorBrief
+    }
+
+    ... on CredentialsError {
+      field
+    }
+  }
+}
