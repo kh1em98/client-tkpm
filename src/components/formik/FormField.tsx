@@ -76,7 +76,7 @@ export const FormField: FC<Props> = ({
                 {icon ? (
                   <>
                     <FormLabel
-                      mt="1.2em"
+                      mt="1em"
                       fontWeight="medium"
                       lineHeight="1.3em"
                       color="#696F79"
@@ -106,7 +106,7 @@ export const FormField: FC<Props> = ({
                 ) : (
                   <>
                     <FormLabel
-                      mt={{ base: "0.8em", lg: "1.2em" }}
+                      mt={{ base: "0.8em", lg: "0.8em" }}
                       fontWeight="medium"
                       lineHeight="1.3em"
                       color="#696F79"

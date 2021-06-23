@@ -3,7 +3,7 @@ import React from 'react';
 
 export const ButtonBlock = ({
   padding = { base: "1em", lg: "1.75em" },
-  mt = '2em',
+  mt = '1.25em',
   bg = "#1565D8",
   _hover = { bg: '#0f51ad' },
   ...otherProps

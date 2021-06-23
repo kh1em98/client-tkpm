@@ -4,7 +4,7 @@ import { ButtonBlock } from '../../components/Button';
 import { Header, MediumText, SubHeader } from '../../components/Typography';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { ERROR_RESPONSE_END_WITH } from '../../constant';
 import { useLoginMutation } from '../../generated/graphql';
 import { pick } from 'lodash';
@@ -12,6 +12,7 @@ import { sharedUserValidationSchema } from '../../view-models/Account';
 import * as Yup from 'yup';
 import { FormField } from '../../components/formik/FormField';
 import { SubmitButton } from '../../components/formik/SubmitButton';
+import axios from 'axios';
 
 interface SignUpForm {
   email: string;
@@ -33,6 +34,8 @@ const RightSide = () => {
   ) => {
     actions.setSubmitting(true);
     try {
+
+      axios.post('http://192.168.1.8:8080/api/v1/sign-up');
 
       const { data } = await login({
         input: {
@@ -129,7 +132,14 @@ const RightSide = () => {
             )}
           </Formik>
         </Box>
+
+        <Text mt="1.25em" color="#0f51ad">
+          <Link to="/sign-in">Already have an account? Sign in</Link>
+        </Text>
+
       </Box>
+
+      <Link to="/sign-in">Already have account ? Sign In</Link>
     </GridItem >
   );
 };

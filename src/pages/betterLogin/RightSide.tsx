@@ -6,7 +6,7 @@ import { ButtonBlock } from '../../components/Button';
 import { Header, MediumText, SubHeader } from '../../components/Typography';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { ERROR_RESPONSE_END_WITH } from '../../constant';
 import { useLoginMutation } from '../../generated/graphql';
 import { pick } from 'lodash';
@@ -106,7 +106,7 @@ const RightSide = () => {
                 </Box>
 
                 <SubmitButton>
-                  <MediumText color="white">Sign In</MediumText>
+                  <MediumText color="white">Sign in</MediumText>
                 </SubmitButton>
               </form>
             )}
@@ -118,6 +118,12 @@ const RightSide = () => {
             <Image src={google} mr="2em" />
             <MediumText color="#000000">Sign in with Google</MediumText>
           </ButtonBlock>
+
+          <Divider bg="#F5F5F5" mt="2em" />
+
+          <Text mt="1.25em" color="#0f51ad">
+            <Link to="/sign-up">Not have an account? Sign up</Link>
+          </Text>
         </Box>
       </Box>
     </GridItem >

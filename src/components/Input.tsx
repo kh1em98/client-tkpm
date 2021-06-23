@@ -3,7 +3,7 @@ import { Input } from '@chakra-ui/react';
 
 
 const StyledInput: FC<any> = ({
-  mt = "0.5em",
+  mt = "0.25em",
   _focus = { shadow: "0px 4px 10px 3px #0000001C", borderColor: "#1565D8" },
   border = "1px",
   borderColor = "#8692A6",
