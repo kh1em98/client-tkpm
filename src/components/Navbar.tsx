@@ -7,7 +7,7 @@ import Footer from './Footer';
 const Navbar = () => {
   return (
     <Box
-      padding="1.2em 1.5em"
+      padding="1.2em 0em"
       display="flex"
       alignItems="center"
       justifyContent="space-between">

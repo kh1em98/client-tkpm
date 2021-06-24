@@ -13,8 +13,21 @@ import {
   FormHelperText,
   FormLabel,
   FormErrorMessage,
+  InputLeftAddon,
+  InputRightAddon,
 } from '@chakra-ui/react';
 import StyledInput from '../Input';
+import {
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from "@chakra-ui/react"
+
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface Props extends FieldAttributes<any> {
   label?: string;
@@ -69,6 +82,48 @@ export const FormField: FC<Props> = ({
                   {...otherProps}>
                   {children}
                 </Textarea>
+              </>
+              break;
+            case 'date':
+              inputNode = <>
+                <DatePicker
+                  selected={new Date()}
+                />
+              </>
+              break;
+
+            case 'number':
+              inputNode = <>
+                <NumberInput defaultValue={18} min={0} max={20}>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </>
+              break;
+
+            case 'currency':
+              inputNode = <>
+                <FormLabel
+                  mt={{ base: "0.8em", lg: "0.8em" }}
+                  fontWeight="medium"
+                  lineHeight="1.3em"
+                  color="#696F79"
+                  fontSize={{ base: "0.75em", lg: "1em" }}
+                >
+                  {label && (
+                    <label>{`${label}${required ? ' *' : ''}`}</label>
+                  )}
+                </FormLabel>
+                <InputGroup>
+                  <StyledInput
+                    {...props.field}
+                    {...otherProps}
+                  />
+                  <InputRightAddon children="VND" mt="4.5px" height="48px" color="#6E7491" />
+                </InputGroup>
               </>
               break;
             default:
@@ -136,6 +191,6 @@ export const FormField: FC<Props> = ({
           </FormControl>
         }}
       </Field>
-    </FormControl>
+    </FormControl >
   );
 };

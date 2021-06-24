@@ -15,3 +15,18 @@ export const sharedUserValidationSchema = {
     .max(AccountConstraint.phone.MAX_LENGTH),
   age: Yup.number().required(),
 };
+
+export const roomSchema = {
+  roomId: Yup.number().required(),
+  pricePerDay: Yup.number().required(),
+};
+
+export const dateSchema = {
+  startTime: Yup.date().required(),
+  endTime: Yup.date()
+    .required()
+    .test('is-greater', 'end time should be greater', function (value) {
+      const { startTime } = this.parent;
+      return value! > startTime;
+    }),
+};

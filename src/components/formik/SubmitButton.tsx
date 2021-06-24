@@ -4,6 +4,7 @@ import { FormButton } from '../FormButton';
 
 export const SubmitButton = ({ disabled = false, ...otherProps }) => {
   const { isValid, isSubmitting } = useFormikContext();
+  console.log('is valid : ', isValid);
   return (
     <FormButton
       disabled={isSubmitting || !isValid || disabled}

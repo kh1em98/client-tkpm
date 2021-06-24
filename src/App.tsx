@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'urql';
 import BetterLogin from './pages/BetterLogin';
 import BetterRegister from './pages/BetterRegister';
+import Contract from './pages/Contract';
+import History from './pages/History';
 import Home from './pages/Home';
-import Test from './pages/Test';
 import { client } from './utils/createUrqlClient';
 import customTheme from './utils/theme';
 
@@ -31,8 +32,12 @@ function App() {
               <BetterRegister />
             </Route>
 
-            <Route path="/test" exact>
-              <Test />
+            <Route path="/history" exact>
+              <History />
+            </Route>
+
+            <Route path="/contract">
+              <Contract />
             </Route>
           </Switch>
         </BrowserRouter>

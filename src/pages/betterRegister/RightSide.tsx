@@ -35,7 +35,7 @@ const RightSide = () => {
     actions.setSubmitting(true);
     try {
 
-      axios.post('http://192.168.1.8:8080/api/v1/sign-up');
+      axios.post('http://3194eac9ef33.ngrok.io/api/v1/sign-up');
 
       const { data } = await login({
         input: {
