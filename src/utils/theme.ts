@@ -25,7 +25,7 @@ const colors = {
 
 const fonts = {
   heading: 'Open Sans',
-  body: 'Raleway',
+  body: 'Open Sans',
 };
 
 const customTheme = extendTheme({ colors, breakpoints, fonts });

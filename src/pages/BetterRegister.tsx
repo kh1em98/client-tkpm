@@ -8,6 +8,7 @@ const BetterRegister = () => {
     <OnboardingLayout>
       <LeftSide />
       <RightSide />
+
     </OnboardingLayout>
   )
 }

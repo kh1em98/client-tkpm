@@ -5,8 +5,6 @@ import { Provider } from 'urql';
 import BetterLogin from './pages/BetterLogin';
 import BetterRegister from './pages/BetterRegister';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
 import Test from './pages/Test';
 import { client } from './utils/createUrqlClient';
 import customTheme from './utils/theme';
@@ -23,14 +21,6 @@ function App() {
           <Switch>
             <Route path="/" exact>
               <Home />
-            </Route>
-
-            <Route path="/login" exact>
-              <Login />
-            </Route>
-
-            <Route path="/register" exact>
-              <Register />
             </Route>
 
             <Route path="/sign-in" exact>

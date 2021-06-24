@@ -1,6 +1,5 @@
 import { Box, Text, Heading, Image, Button } from '@chakra-ui/react'
 import React, { FC } from 'react'
-import shanghai from '../images/shanghai.png';
 import { StarIcon } from '@chakra-ui/icons';
 
 interface RoomProps {

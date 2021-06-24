@@ -138,8 +138,6 @@ const RightSide = () => {
         </Text>
 
       </Box>
-
-      <Link to="/sign-in">Already have account ? Sign In</Link>
     </GridItem >
   );
 };
