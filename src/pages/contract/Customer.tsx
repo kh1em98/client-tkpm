@@ -82,9 +82,10 @@ const CustomerInfo = () => {
         >
           {(props: FormikProps<ContractForm>): JSX.Element => (
             <form onSubmit={props.handleSubmit}>
-              <HStack spacing="4em">
+              <Box display="flex" alignItems="flex-start">
                 <Box>
                   <FormField
+                    mr="4em"
                     name="email"
                     placeholder="Email Address *"
                     type="email"
@@ -100,6 +101,7 @@ const CustomerInfo = () => {
                 </Box>
                 <Box>
                   <FormField
+                    mr="4em"
                     name="phone"
                     placeholder="Phone Number *"
                     type="text"
@@ -114,6 +116,7 @@ const CustomerInfo = () => {
                 </Box>
                 <Box>
                   <FormField
+                    mr="4em"
                     name="age"
                     placeholder="Your Age *"
                     type="number"
@@ -127,16 +130,17 @@ const CustomerInfo = () => {
                     _focus={{ borderColor: '#605DEC' }}
                   />
                 </Box>
-              </HStack>
+              </Box>
 
               <Text color="#6E7491" fontSize="1.125em" fontWeight="semibold">
                 Room
               </Text>
 
-              <HStack spacing="4em">
+              <Box display="flex" alignItems="flex-start">
                 <Box>
                   {' '}
                   <FormField
+                    mr="4em"
                     name="roomId"
                     placeholder="Room id *"
                     type="text"
@@ -166,10 +170,10 @@ const CustomerInfo = () => {
                     _focus={{ borderColor: '#605DEC' }}
                   />
                 </Box>
-              </HStack>
+              </Box>
               <Box display="flex" justifyContent="flex-start"></Box>
 
-              <HStack spacing="4em">
+              <Box display="flex" alignItems="flex-start">
                 <Box>
                   <Text
                     color="#6E7491"
@@ -178,6 +182,7 @@ const CustomerInfo = () => {
                     Start Time
                   </Text>
                   <FormField
+                    mr="4em"
                     name="startTime"
                     placeholder="Start time *"
                     type="date"
@@ -199,6 +204,7 @@ const CustomerInfo = () => {
                     End Time
                   </Text>
                   <FormField
+                    mr="4em"
                     name="endTime"
                     placeholder="End time *"
                     type="date"
@@ -211,7 +217,7 @@ const CustomerInfo = () => {
                     color="#7C8DB0"
                     _focus={{ borderColor: '#605DEC' }}></FormField>
                 </Box>
-              </HStack>
+              </Box>
 
               <Text
                 color="#7C8DB0"
