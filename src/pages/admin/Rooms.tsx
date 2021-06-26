@@ -27,9 +27,7 @@ export default function Rooms() {
   }
 
   useEffect(() => {
-    if (roomState.roomList.length === 0) {
-      dispatch(getRoomList());
-    }
+    dispatch(getRoomList());
   }, []);
 
   return (

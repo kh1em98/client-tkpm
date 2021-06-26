@@ -63,7 +63,7 @@ const { reducer, actions } = createSlice({
         state.isFetching = true;
       })
       .addCase(getRoomList.fulfilled, (state, action) => {
-        state.roomList = action.payload!;
+        state.roomList = [...state.roomList, ...action.payload];
         state.isFetching = false;
       })
       .addCase(getRoomList.rejected, (state, action) => {

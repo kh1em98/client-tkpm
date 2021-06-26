@@ -20,6 +20,10 @@ export default function Home() {
   const roomState = useAppSelector((state) => state.room);
   const userState = useAppSelector((state) => state.user);
 
+  if (userState.role === Role.ADMIN) {
+    history.push('/admin/rooms');
+  }
+
   const selectRoomHandler = (id: number) => {
     dispatch(selectRoom(id));
     history.push('/contract');

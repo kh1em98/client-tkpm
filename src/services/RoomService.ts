@@ -1,4 +1,4 @@
-import { Room } from '../models/Room';
+import { Room, RoomStatus } from '../models/Room';
 import { RoomGateway } from '../gateways/RoomGateway';
 import { Contract } from '../models/Contract';
 import { IRoomForm } from '../pages/admin/RoomForm';
@@ -15,7 +15,20 @@ export class RoomService {
   }
 
   public async createRoom(room: IRoomForm): Promise<Room> {
-    return this.roomGateway.create(room);
+    // return this.roomGateway.create(room);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          id: 1,
+          name: room.name,
+          price: room.price!,
+          description: room.description,
+          rate: room.rate!,
+          image: room!.image!,
+          status: RoomStatus.AVAILABLE,
+        });
+      }, 1000);
+    });
   }
 
   public async bookRoom(updatedRoom: Room): Promise<void> {

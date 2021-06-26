@@ -7,12 +7,12 @@ import { setUrl } from '../../utils/url';
 import { uploadGateway } from '../../services/index';
 import Success from './Success';
 
-function Upload() {
-  const [imageUrl, setImageUrl] = useState<string>('');
+function Upload({ imageUrl, setImageUrl }) {
   const history = useHistory();
   const dragDrop = useRef<HTMLDivElement | null>(null);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   let zone, file;
 
   useEffect(() => {
@@ -20,14 +20,11 @@ function Upload() {
     zone = dragDrop.current;
 
     zone.addEventListener('dragover', (event) => {
-      console.log('drag over');
       event.preventDefault();
     });
 
     zone.addEventListener('drop', (e) => {
-      console.log('drop ne');
       e.preventDefault();
-      console.log('event : ', e.dataTransfer);
       file = e.dataTransfer.files[0];
       drop(file);
       handleShow();
@@ -36,34 +33,33 @@ function Upload() {
 
   const drop = async (file) => {
     try {
-      const imageUrl = await uploadGateway.uploadImage(file);
-      setImageUrl(imageUrl);
-      console.log('image response : ', imageUrl);
+      setIsUploading(true);
+      const response = await uploadGateway.uploadImage(file);
+      setImageUrl(response);
     } catch (error) {
       console.log('error upload : ', error);
+    } finally {
+      setIsUploading(false);
     }
-    // setFileUrl(await fileRef.getDownloadURL());
   };
 
   const handleLoad = async (e) => {
     try {
+      setIsUploading(true);
       const file = e.target.files[0];
-      const imageUrl = await uploadGateway.uploadImage(file);
-      setImageUrl(imageUrl);
-      console.log('image response : ', imageUrl);
+      const response = await uploadGateway.uploadImage(file);
+      setImageUrl(response);
     } catch (error) {
       console.log('error upload : ', error);
+    } finally {
+      setIsUploading(false);
     }
-    // const storageRef = app.storage().ref();
-    // const fileRef = storageRef.child(file.name);
-    // await fileRef.put(file);
-    // setFileUrl(await fileRef.getDownloadURL());
   };
 
   const handleShow = () => {
     const load = document.querySelector('.load');
     const upload = document.querySelector('.upload');
-    if (imageUrl == '') {
+    if (imageUrl === '') {
       (upload as any).style.display = 'none';
       (load as any).style.display = 'flex';
     }
@@ -87,7 +83,9 @@ function Upload() {
         <Success imageUrl={imageUrl} />
       ) : (
         <>
-          <div style={{ display: 'none' }} className="load">
+          <div
+            style={{ display: isUploading ? 'flex' : 'none' }}
+            className="load">
             <h2>Uploading</h2>
             <div className="mouve">
               <div className="mouve-in"></div>
@@ -111,6 +109,7 @@ function Upload() {
 
               <button
                 onClick={(e) => {
+                  e.preventDefault();
                   inputRef.current!.click();
                 }}>
                 choose image
@@ -123,6 +122,7 @@ function Upload() {
                 placeholder="Choose a file"
                 accept=".jpg, .jpeg, .png"
                 onChange={(e) => {
+                  e.preventDefault();
                   handleLoad(e);
                   handleShow();
                 }}
