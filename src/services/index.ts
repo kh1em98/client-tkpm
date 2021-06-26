@@ -5,6 +5,7 @@ import { RoomGateway } from '../gateways/RoomGateway';
 import { RoomService } from './RoomService';
 import { ContractGateway } from '../gateways/ContractGateway';
 import { ContractService } from './ContractService';
+import { UploadGateway } from '../gateways/UploadGateway';
 
 const restConnector = axios.create({
   baseURL: 'http://localhost:8080/api/v1',
@@ -13,6 +14,7 @@ const restConnector = axios.create({
 const authGateway = new AuthGateway({ restConnector });
 const roomGateway = new RoomGateway({ restConnector });
 const contractGateway = new ContractGateway({ restConnector });
+export const uploadGateway = new UploadGateway({ restConnector });
 
 export const authService = new AuthService({ authGateway });
 export const roomService = new RoomService({ roomGateway });

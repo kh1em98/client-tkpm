@@ -26,6 +26,7 @@
   height: 224.4px;
   border-radius: 12px;
   border: 2px solid #dadaff;
+  object-fit: cover;
 }
 .success-bottom {
   display: flex;

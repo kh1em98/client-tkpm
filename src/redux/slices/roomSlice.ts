@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Room, RoomStatus } from '../../models/Room';
 import { roomService, contractService } from '../../services/index';
 import { Contract } from '../../models/Contract';
+import { IRoomForm } from '../../pages/admin/RoomForm';
 
 interface RoomState {
   roomSelected: Room | null | undefined;
@@ -35,7 +36,7 @@ export const createContract = createAsyncThunk(
 
 export const createRoom = createAsyncThunk(
   'room/create',
-  async (body: Room, thunkAPI) => {
+  async (body: IRoomForm, thunkAPI) => {
     const room = await roomService.createRoom(body);
     return room;
   },

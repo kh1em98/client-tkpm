@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { Room } from '../models/Room';
 import { Contract } from '../models/Contract';
+import { IRoomForm } from '../pages/admin/RoomForm';
 
 const AUTHORIZATION_HEADER = 'Authorization';
 
@@ -18,7 +19,7 @@ export class RoomGateway {
     return data;
   }
 
-  public async create(room: Room): Promise<Room> {
+  public async create(room: IRoomForm): Promise<Room> {
     const { data } = await this.restConnector.post('/create_room', room);
     return data;
   }

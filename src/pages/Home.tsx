@@ -9,7 +9,7 @@ import { Role } from '../models/Account';
 import { Room } from '../models/Room';
 import { getRoomList, selectRoom } from '../redux/slices/roomSlice';
 import { useAppDispatch, useAppSelector } from '../redux/store';
-import AdminPanel from './home/AdminPanel';
+import CreateRoom from './admin/CreateRoom';
 import RatingPreview from './home/RatingPreview';
 
 export default function Home() {
@@ -33,47 +33,52 @@ export default function Home() {
 
   return (
     <AuthenticatedLayout>
-      {userState.role === Role.ADMIN ? <Image src={world} /> : <AdminPanel />}
+      {userState.role === Role.ADMIN ? (
+        <CreateRoom />
+      ) : (
+        <>
+          {' '}
+          <Image src={world} />
+          <Box mt="1em">
+            <Heading
+              lineHeight="2em"
+              fontSize="1.5em"
+              fontWeight="bold"
+              color="#6E7491">
+              Find your next adventure with these
+              <Text display="inline-block" ml="0.35em" color="#605DEC">
+                booking deals
+              </Text>
+            </Heading>
 
-      <Box mt="1em">
-        <Heading
-          lineHeight="2em"
-          fontSize="1.5em"
-          fontWeight="bold"
-          color="#6E7491">
-          Find your next adventure with these
-          <Text display="inline-block" ml="0.35em" color="#605DEC">
-            booking deals
-          </Text>
-        </Heading>
-
-        {roomState.isFetching ? (
-          <h2>Loading....</h2>
-        ) : (
-          <Grid
-            templateColumns="repeat(3, 1fr)"
-            mt="1.5em"
-            width="100%"
-            gap="1.5em">
-            {roomState.roomList.map((room: Room) => {
-              return (
-                <RoomComponent
-                  id={room.id}
-                  name={room.name}
-                  price={room.price}
-                  description={room.description}
-                  image={room.image}
-                  rating={room.rate}
-                  status={room.status}
-                  onSelectRoom={selectRoomHandler}
-                />
-              );
-            })}
-          </Grid>
-        )}
-      </Box>
-
-      <RatingPreview />
+            {roomState.isFetching ? (
+              <h2>Loading....</h2>
+            ) : (
+              <Grid
+                templateColumns="repeat(3, 1fr)"
+                mt="1.5em"
+                width="100%"
+                gap="1.5em">
+                {roomState.roomList.map((room: Room) => {
+                  return (
+                    <RoomComponent
+                      id={room.id}
+                      name={room.name}
+                      price={room.price}
+                      description={room.description}
+                      image={room.image}
+                      rating={room.rate}
+                      status={room.status}
+                      onSelectRoom={selectRoomHandler}
+                    />
+                  );
+                })}
+              </Grid>
+            )}
+          </Box>
+          <RatingPreview />
+        </>
+      )}
     </AuthenticatedLayout>
   );
 }

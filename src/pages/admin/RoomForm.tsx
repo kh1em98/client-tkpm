@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, useToast } from '@chakra-ui/react';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import React from 'react';
 import { FormField } from '../../components/formik/FormField';
@@ -8,9 +8,13 @@ import { RoomStatus } from '../../models/Room';
 import { dayDiff } from '../../utils/date';
 import { formatToVnd } from '../../utils/helper';
 import ContractForm from '../contract/ContractForm';
-import UploadImage from './UploadImage';
+import UploadImage from '../../components/upload/UploadImage';
+import { useAppDispatch } from '../../redux/store';
+import { createRoom } from '../../redux/slices/roomSlice';
+import { useHistory } from 'react-router';
+import { unwrapResult } from '@reduxjs/toolkit';
 
-interface IRoomForm {
+export interface IRoomForm {
   name: string;
   price: number;
   description: string;
@@ -18,28 +22,29 @@ interface IRoomForm {
   image: string;
 }
 const RoomForm = () => {
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+  const toast = useToast();
   const handleCreateRoom = async (
     values: IRoomForm,
     actions: FormikHelpers<IRoomForm>,
   ) => {
     actions.setSubmitting(true);
-    // try {
-    //   const resultAction = await dispatch(signIn(values));
-    //   const payload = unwrapResult(resultAction);
+    try {
+      const resultAction = await dispatch(createRoom(values));
+      unwrapResult(resultAction);
 
-    //   console.log('payload : ', payload);
+      history.push('/admin/rooms');
+    } catch (errorMessage) {
+      actions.setSubmitting(false);
 
-    //   history.push('/');
-    // } catch (errorMessage) {
-    //   actions.setSubmitting(false);
-
-    //   toast({
-    //     title: 'Error',
-    //     description: errorMessage as string,
-    //     status: 'error',
-    //     isClosable: true,
-    //   });
-    // }
+      toast({
+        title: 'Error',
+        description: errorMessage as string,
+        status: 'error',
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -64,7 +69,7 @@ const RoomForm = () => {
                 name="name"
                 placeholder="Room's Name"
                 type="text"
-                width="400px"
+                width="500px"
                 padding="0.5em 0.75em"
                 fontSize="18px"
                 height="48px"
@@ -93,13 +98,13 @@ const RoomForm = () => {
                 placeholder="Room's Description"
                 tag="textarea"
                 type="number"
-                width="400px"
+                width="500px"
                 mt="0.5em"
                 padding="0.5em 0.75em"
                 fontSize="18px"
                 height="48px"
-                disabled
-                _disabled={{ borderColor: '#A1B0CC', color: '#7C8DB0' }}
+                borderColor="#A1B0CC"
+                color="#7C8DB0"
               />
             </Box>
 
@@ -107,7 +112,7 @@ const RoomForm = () => {
 
             <SubmitButton
               mt="2em"
-              width="300px"
+              width="500px"
               bg="#605DEC"
               _hover={{ bg: '#4543b3' }}>
               <MediumText color="white">Create Contract</MediumText>

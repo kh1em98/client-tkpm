@@ -1,6 +1,7 @@
 import { Room } from '../models/Room';
 import { RoomGateway } from '../gateways/RoomGateway';
 import { Contract } from '../models/Contract';
+import { IRoomForm } from '../pages/admin/RoomForm';
 
 export class RoomService {
   private roomGateway: RoomGateway;
@@ -13,7 +14,7 @@ export class RoomService {
     return this.roomGateway.getList();
   }
 
-  public async createRoom(room: Room): Promise<Room> {
+  public async createRoom(room: IRoomForm): Promise<Room> {
     return this.roomGateway.create(room);
   }
 

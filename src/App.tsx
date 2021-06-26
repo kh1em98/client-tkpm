@@ -1,6 +1,8 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import CreateRoom from './pages/admin/CreateRoom';
+import AdminRooms from './pages/admin/Rooms';
 import BetterLogin from './pages/BetterLogin';
 import BetterRegister from './pages/BetterRegister';
 import Contract from './pages/Contract';
@@ -41,6 +43,16 @@ function App() {
               <Route path="/sign-up" exact>
                 <BetterRegister />
               </Route>
+              <Route path="/admin/rooms" exact>
+                <AdminRooms />
+              </Route>
+              <Route path="/admin/create-room" exact>
+                <CreateRoom />
+              </Route>
+
+              {/* <Route path="*">
+                <h1>404 Not Found</h1>
+              </Route> */}
             </>
           )}
         </Switch>
