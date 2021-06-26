@@ -1,4 +1,16 @@
-import { GridItem, Box, Text, Divider, Input, Checkbox, Button, Image, Heading, useToast, FormErrorMessage } from '@chakra-ui/react';
+import {
+  GridItem,
+  Box,
+  Text,
+  Divider,
+  Input,
+  Checkbox,
+  Button,
+  Image,
+  Heading,
+  useToast,
+  FormErrorMessage,
+} from '@chakra-ui/react';
 import google from '../../images/google.svg';
 import React from 'react';
 import StyledInput from '../../components/Input';
@@ -14,17 +26,22 @@ import { sharedUserValidationSchema } from '../../view-models/Account';
 import * as Yup from 'yup';
 import { FormField } from '../../components/formik/FormField';
 import { SubmitButton } from '../../components/formik/SubmitButton';
+import { useAppDispatch } from '../../redux/store';
+import { signIn } from '../../redux/slices/userSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
 
-interface SignInForm {
+export interface SignInForm {
   email: string;
   password: string;
 }
-const signInValidationSchema = Yup.object().shape(pick(sharedUserValidationSchema, ['email', 'password']));
+const signInValidationSchema = Yup.object().shape(
+  pick(sharedUserValidationSchema, ['email', 'password']),
+);
 
 const RightSide = () => {
   const toast = useToast();
-  const history = useHistory()
-  const [, login] = useLoginMutation();
+  const history = useHistory();
+  const dispatch = useAppDispatch();
 
   const handleSignIn = async (
     values: SignInForm,
@@ -32,40 +49,34 @@ const RightSide = () => {
   ) => {
     actions.setSubmitting(true);
     try {
+      const resultAction = await dispatch(signIn(values));
+      const payload = unwrapResult(resultAction);
 
-      const { data } = await login({
-        input: {
-          ...values
-        },
-
-      });
-
-      if (data?.login.__typename.endsWith(ERROR_RESPONSE_END_WITH)) {
-        throw new Error((data.login as any).message);
-      }
+      console.log('payload : ', payload);
 
       history.push('/');
-    } catch (e) {
+    } catch (errorMessage) {
       actions.setSubmitting(false);
 
       toast({
-        title: "Error",
-        description: (e as any).message,
-        status: "error",
+        title: 'Error',
+        description: errorMessage as string,
+        status: 'error',
         isClosable: true,
-      })
-
+      });
     }
   };
 
-
   return (
     <GridItem colSpan={{ base: 12, md: 12, lg: 7 }} bg="white">
-      <Box height="100%" display="flex" alignItems="center" justifyContent="center" flexDirection="column">
-        <Box width={{ base: "75%", md: "50%", lg: "65%", "2xl": "500px" }}>
-          <Header>
-            Sign in Individual Account!
-          </Header>
+      <Box
+        height="100%"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column">
+        <Box width={{ base: '75%', md: '50%', lg: '65%', '2xl': '500px' }}>
+          <Header>Sign in Individual Account!</Header>
 
           <SubHeader>
             For the purpose of industry regulation, your details are required.
@@ -79,13 +90,12 @@ const RightSide = () => {
               password: '',
             }}
             validationSchema={signInValidationSchema}
-            onSubmit={handleSignIn}
-          >
+            onSubmit={handleSignIn}>
             {(props: FormikProps<SignInForm>): JSX.Element => (
               <form onSubmit={props.handleSubmit}>
                 <FormField
                   name="email"
-                  placeholder='email'
+                  placeholder="email"
                   type="email"
                   label="Email"
                 />
@@ -94,14 +104,24 @@ const RightSide = () => {
 
                 <FormField
                   name="password"
-                  placeholder='password'
+                  placeholder="password"
                   type="password"
                   label="Password"
                 />
 
                 <Box display="flex" alignItems="center" mt="1.5em">
-                  <Checkbox defaultIsChecked size="lg" spacing="0.75em" outline="none">
-                    <Text color="#696F79" fontWeight="medium" fontSize={{ base: "0.75em", lg: "0.875em" }} lineHeight="19px">I agree to terms & conditions</Text>
+                  <Checkbox
+                    defaultIsChecked
+                    size="lg"
+                    spacing="0.75em"
+                    outline="none">
+                    <Text
+                      color="#696F79"
+                      fontWeight="medium"
+                      fontSize={{ base: '0.75em', lg: '0.875em' }}
+                      lineHeight="19px">
+                      I agree to terms & conditions
+                    </Text>
                   </Checkbox>
                 </Box>
 
@@ -114,7 +134,10 @@ const RightSide = () => {
 
           <Divider bg="#F5F5F5" mt="2em" />
 
-          <ButtonBlock bg="white" shadow="0px 4px 10px 0px #00000014" _hover={{ bg: "#F5F5F5" }}>
+          <ButtonBlock
+            bg="white"
+            shadow="0px 4px 10px 0px #00000014"
+            _hover={{ bg: '#F5F5F5' }}>
             <Image src={google} mr="2em" />
             <MediumText color="#000000">Sign in with Google</MediumText>
           </ButtonBlock>
@@ -126,7 +149,7 @@ const RightSide = () => {
           </Text>
         </Box>
       </Box>
-    </GridItem >
+    </GridItem>
   );
 };
 

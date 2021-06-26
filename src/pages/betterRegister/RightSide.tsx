@@ -1,32 +1,42 @@
-import { GridItem, Box, Text, Divider, Input, Checkbox, Button, Image, Heading, useToast, FormErrorMessage } from '@chakra-ui/react';
-import React from 'react';
-import { ButtonBlock } from '../../components/Button';
-import { Header, MediumText, SubHeader } from '../../components/Typography';
+import { Box, Divider, GridItem, Text, useToast } from '@chakra-ui/react';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { Link, useHistory } from 'react-router-dom';
-import { ERROR_RESPONSE_END_WITH } from '../../constant';
-import { useLoginMutation } from '../../generated/graphql';
 import { pick } from 'lodash';
-import { sharedUserValidationSchema } from '../../view-models/Account';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { FormField } from '../../components/formik/FormField';
 import { SubmitButton } from '../../components/formik/SubmitButton';
-import axios from 'axios';
+import { Header, MediumText, SubHeader } from '../../components/Typography';
+import { useLoginMutation } from '../../generated/graphql';
+import { userSelector } from '../../redux/slices/userSlice';
+import { useAppDispatch } from '../../redux/store';
+import { authService } from '../../services/index';
+import { sharedUserValidationSchema } from '../../view-models/Account';
 
-interface SignUpForm {
+export interface SignUpForm {
   email: string;
   username: string;
   password: string;
   phone: string;
   age: string;
 }
-const signUpValidationSchema = Yup.object().shape(pick(sharedUserValidationSchema, ['email', 'username', 'age', 'phone', 'password']));
+const signUpValidationSchema = Yup.object().shape(
+  pick(sharedUserValidationSchema, [
+    'email',
+    'username',
+    'age',
+    'phone',
+    'password',
+  ]),
+);
 
 const RightSide = () => {
   const toast = useToast();
-  const history = useHistory()
+  const history = useHistory();
   const [, login] = useLoginMutation();
+  const { isFetching } = useSelector(userSelector);
+  const dispatch = useAppDispatch();
 
   const handleSignUp = async (
     values: SignUpForm,
@@ -34,42 +44,38 @@ const RightSide = () => {
   ) => {
     actions.setSubmitting(true);
     try {
+      await authService.signUp(values);
 
-      axios.post('http://3194eac9ef33.ngrok.io/api/v1/sign-up');
-
-      const { data } = await login({
-        input: {
-          ...values
-        },
-
+      toast({
+        title: 'Success',
+        description: 'Register successfully. Now login',
+        status: 'success',
+        isClosable: true,
       });
 
-      if (data?.login.__typename.endsWith(ERROR_RESPONSE_END_WITH)) {
-        throw new Error((data.login as any).message);
-      }
-
-      history.push('/');
+      history.push('/sign-in');
     } catch (e) {
       actions.setSubmitting(false);
 
       toast({
-        title: "Error",
-        description: (e as any).message,
-        status: "error",
+        title: 'Error',
+        description: e.message,
+        status: 'error',
         isClosable: true,
-      })
-
+      });
     }
   };
 
-
   return (
     <GridItem colSpan={{ base: 12, md: 12, lg: 7 }} bg="white">
-      <Box height="100%" display="flex" alignItems="center" justifyContent="center" flexDirection="column">
-        <Box width={{ base: "75%", md: "50%", lg: "65%", "2xl": "500px" }}>
-          <Header>
-            Sign Up Individual Account!
-          </Header>
+      <Box
+        height="100%"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column">
+        <Box width={{ base: '75%', md: '50%', lg: '65%', '2xl': '500px' }}>
+          <Header>Sign Up Individual Account!</Header>
 
           <SubHeader>
             For the purpose of industry regulation, your details are required.
@@ -83,44 +89,43 @@ const RightSide = () => {
               password: '',
               phone: '',
               age: '',
-              username: ''
+              username: '',
             }}
             validationSchema={signUpValidationSchema}
-            onSubmit={handleSignUp}
-          >
+            onSubmit={handleSignUp}>
             {(props: FormikProps<SignUpForm>): JSX.Element => (
               <form onSubmit={props.handleSubmit}>
                 <FormField
                   name="email"
-                  placeholder='email'
+                  placeholder="email"
                   type="email"
                   label="Email"
                 />
 
                 <FormField
                   name="username"
-                  placeholder='username'
+                  placeholder="username"
                   type="text"
                   label="Username"
                 />
 
                 <FormField
                   name="password"
-                  placeholder='password'
+                  placeholder="password"
                   type="password"
                   label="Password"
                 />
 
                 <FormField
                   name="phone"
-                  placeholder='phone'
+                  placeholder="phone"
                   type="text"
                   label="Phone"
                 />
 
                 <FormField
                   name="age"
-                  placeholder='age'
+                  placeholder="age"
                   type="number"
                   label="Age"
                 />
@@ -136,9 +141,8 @@ const RightSide = () => {
         <Text mt="1.25em" color="#0f51ad">
           <Link to="/sign-in">Already have an account? Sign in</Link>
         </Text>
-
       </Box>
-    </GridItem >
+    </GridItem>
   );
 };
 

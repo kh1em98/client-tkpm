@@ -3,7 +3,7 @@ import { AuthService } from './AuthService';
 import { AuthGateway } from '../gateways/AuthGateway';
 
 const restConnector = axios.create({
-  baseURL: 'http://localhost:8080/graphql',
+  baseURL: 'http://localhost:8080/api/v1',
 });
 
 const authGateway = new AuthGateway({ restConnector });

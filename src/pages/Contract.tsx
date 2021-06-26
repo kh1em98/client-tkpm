@@ -1,9 +1,12 @@
-import { Box, Heading, Text } from '@chakra-ui/react'
-import React from 'react'
-import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout'
-import CustomerInfo from './contract/Customer'
+import { Box, Heading, Text } from '@chakra-ui/react';
+import React from 'react';
+import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout';
+import CustomerInfo from './contract/Customer';
+import useIsAuth from '../hooks/useIsAuth';
 
 const Contract = () => {
+  useIsAuth();
+
   return (
     <AuthenticatedLayout>
       <Box margin="4em auto">
@@ -22,8 +25,7 @@ const Contract = () => {
         <CustomerInfo />
       </Box>
     </AuthenticatedLayout>
+  );
+};
 
-  )
-}
-
-export default Contract
+export default Contract;

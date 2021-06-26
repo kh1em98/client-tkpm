@@ -1,6 +1,7 @@
-import { Box, Text, Heading, Image, Button } from '@chakra-ui/react'
-import React, { FC } from 'react'
+import { Box, Text, Heading, Image, Button, Badge } from '@chakra-ui/react';
+import React, { FC } from 'react';
 import { StarIcon } from '@chakra-ui/icons';
+import { RoomStatus } from '../models/Room';
 
 interface RoomProps {
   id?: number;
@@ -10,6 +11,7 @@ interface RoomProps {
   description?: string;
   reviewCount?: number;
   rating?: number;
+  status?: RoomStatus;
 }
 
 const Room: FC<RoomProps> = ({
@@ -18,36 +20,46 @@ const Room: FC<RoomProps> = ({
   name,
   description = "Viet Nam's most international city",
   reviewCount = Math.floor(Math.random() * 100),
-  rating = Math.floor(Math.random() * 5)
+  rating = Math.floor(Math.random() * 5),
+  status = RoomStatus.BOOKED,
 }: RoomProps) => {
   return (
     <Box
       flexGrow={1}
       shadow="0px 2px 4px rgba(28, 5, 77, 0.1), 0px 12px 32px rgba(0, 0, 0, 0.05)"
+      _hover={{
+        shadow:
+          '0px 4px 8px rgba(28, 5, 77, 0.1), 0px 18px 32px rgba(0, 0, 0, 0.05)',
+      }}
+      cursor="pointer"
       borderRadius="12px"
       minWidth="300px"
       height="auto"
       overflow="hidden"
-      mr="4em"
-      _last={{ mr: "0" }}
-    >
+      mr="3em"
+      _last={{ mr: '0' }}>
       <Image src={image} />
 
       <Box padding="1em 1.5em">
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between">
+        <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box>
             <Heading
               lineHeight="1.5em"
               fontSize="1.125em"
               fontWeight="semibold"
               color="#6E7491">
-              {name},
-              <Text display="inline-block" ml="0.35em" color="#605DEC">
+              {name}{' '}
+              {/* <Text as="span" color="#605DEC">
                 ShangHai
-              </Text>
+              </Text> */}
+              <Badge
+                ml="1"
+                fontSize="0.8em"
+                colorScheme={
+                  status === RoomStatus.AVAILABLE ? 'green' : 'yellow'
+                }>
+                {status === RoomStatus.AVAILABLE ? 'Available' : 'Booked'}
+              </Badge>
             </Heading>
             <Text mt="0.25em" color="#7C8DB0" fontWeight="normal">
               {description}
@@ -55,7 +67,7 @@ const Room: FC<RoomProps> = ({
           </Box>
 
           <Text color="#434658" fontWeight="medium" fontSize="1.125em">
-            ${price}
+            {price}
           </Text>
         </Box>
         <Box d="flex" mt="2" alignItems="center">
@@ -70,7 +82,7 @@ const Room: FC<RoomProps> = ({
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Room
+export default Room;

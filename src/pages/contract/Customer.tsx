@@ -70,12 +70,10 @@ const CustomerInfo = () => {
           initialValues={{
             email: '',
             userId: 1,
-            roomId: 1,
             phone: '',
             age: '',
             startTime: new Date(),
             endTime: new Date(),
-            pricePerDay: 0,
           }}
           validationSchema={contractValidationSchema}
           onSubmit={handleCreateContract}

@@ -14,14 +14,12 @@ export enum AccountStatus {
 }
 
 export interface Account {
-  id?: string;
+  id: string;
   email: string;
   username: string;
-  password?: string;
   age: number;
   phone: string;
   role: Role;
-  emailVerified: boolean;
 }
 
 export type LoginUser = Account;

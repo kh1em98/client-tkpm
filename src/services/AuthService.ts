@@ -1,5 +1,6 @@
 import { AuthGateway } from '../gateways/AuthGateway';
 import { LoginUser } from '../models/Account';
+import { SignUpForm } from '../pages/betterRegister/RightSide';
 
 export class AuthService {
   private authGateway: AuthGateway;
@@ -17,48 +18,19 @@ export class AuthService {
     return this.getLoginUser();
   }
 
-  public async getLoginUser(): Promise<LoginUser | null> {
+  public getLoginUser(): LoginUser | null {
     return this.authGateway.getLoginUser();
+  }
+
+  public async signUp(body: SignUpForm) {
+    return this.authGateway.signUp(body);
   }
 
   public logout(): void {
     this.authGateway.logout();
   }
 
-  public async sendResetPasswordEmail(email: string): Promise<void> {
-    return this.authGateway.sendResetPasswordEmail(email);
-  }
-
-  public async updateAccountInfo(body: {
-    name: string;
-    email: string;
-    preferredLanguage: string;
-  }): Promise<void> {
-    await this.authGateway.updateAccountInfo(body);
-  }
-
-  public async setNewPassword(body: {
-    accountId: string;
-    newPassword: string;
-    resetPasswordToken: string;
-  }): Promise<void> {
-    await this.authGateway.setNewPassword(body);
-  }
-
-  public async verifyAccount(
-    accountVerificationToken: string,
-  ): Promise<boolean> {
-    return this.authGateway.verifyAccount(accountVerificationToken);
-  }
-
   public setAccessToken(accessToken: string): void {
     this.authGateway.setAccessToken(accessToken);
-  }
-
-  public async changePassword(
-    oldPassword: string,
-    newPassword: string,
-  ): Promise<void> {
-    await this.authGateway.changePassword(oldPassword, newPassword);
   }
 }
