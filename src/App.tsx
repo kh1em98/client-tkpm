@@ -1,6 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Contracts from './pages/admin/Contracts';
 import CreateRoom from './pages/admin/CreateRoom';
 import AdminRooms from './pages/admin/Rooms';
 import BetterLogin from './pages/BetterLogin';
@@ -48,6 +49,10 @@ function App() {
               </Route>
               <Route path="/admin/create-room" exact>
                 <CreateRoom />
+              </Route>
+
+              <Route path="/admin/contracts" exact>
+                <Contracts />
               </Route>
 
               {/* <Route path="*">

@@ -1,5 +1,5 @@
 import { ContractGateway } from './../gateways/ContractGateway';
-import { Contract } from '../models/Contract';
+import { Contract, ContractStatus } from '../models/Contract';
 
 export class ContractService {
   private contractGateway: ContractGateway;
@@ -10,6 +10,13 @@ export class ContractService {
 
   public async getContractList(): Promise<Array<Contract>> {
     return this.contractGateway.getList();
+  }
+
+  public async getProgressingContractList(): Promise<Array<Contract>> {
+    const contractList = await this.contractGateway.getList();
+    return contractList.filter(
+      (contract) => contract.status === ContractStatus.PROGRESSING,
+    );
   }
 
   public async createContract(contract: Contract): Promise<Contract> {
