@@ -1,3 +1,0 @@
-fragment ErrorBrief on Error {
-  message
-}

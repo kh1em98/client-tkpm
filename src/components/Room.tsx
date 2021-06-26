@@ -2,47 +2,51 @@ import { Box, Text, Heading, Image, Button, Badge } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { StarIcon } from '@chakra-ui/icons';
 import { RoomStatus } from '../models/Room';
+import { formatToVnd } from '../utils/helper';
 
 interface RoomProps {
   id?: number;
-  price: string;
+  price: number;
   image: string;
   name: string;
   description?: string;
   reviewCount?: number;
-  rating?: number;
+  rating: number;
   status?: RoomStatus;
+  onSelectRoom: Function;
 }
 
 const Room: FC<RoomProps> = ({
+  id,
   price,
   image,
   name,
   description = "Viet Nam's most international city",
   reviewCount = Math.floor(Math.random() * 100),
-  rating = Math.floor(Math.random() * 5),
-  status = RoomStatus.BOOKED,
+  rating,
+  status,
+  onSelectRoom,
 }: RoomProps) => {
   return (
     <Box
-      flexGrow={1}
       shadow="0px 2px 4px rgba(28, 5, 77, 0.1), 0px 12px 32px rgba(0, 0, 0, 0.05)"
       _hover={{
         shadow:
           '0px 4px 8px rgba(28, 5, 77, 0.1), 0px 18px 32px rgba(0, 0, 0, 0.05)',
       }}
+      maxW="448px"
+      minWidth="448px"
+      height="auto"
       cursor="pointer"
       borderRadius="12px"
-      minWidth="300px"
-      height="auto"
       overflow="hidden"
-      mr="3em"
-      _last={{ mr: '0' }}>
-      <Image src={image} />
+      mb="2em"
+      onClick={() => onSelectRoom(id)}>
+      <Image src={image} objectFit="cover" width="448px" height="432px" />
 
-      <Box padding="1em 1.5em">
+      <Box padding="1em 1.5em" paddingBottom="1.5em">
         <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Box>
+          <Box maxW="210px">
             <Heading
               lineHeight="1.5em"
               fontSize="1.125em"
@@ -67,14 +71,18 @@ const Room: FC<RoomProps> = ({
           </Box>
 
           <Text color="#434658" fontWeight="medium" fontSize="1.125em">
-            {price}
+            {formatToVnd(price)}
           </Text>
         </Box>
         <Box d="flex" mt="2" alignItems="center">
           {Array(5)
             .fill('')
             .map((_, i) => (
-              <StarIcon key={i} color={i < rating ? '#605DEC' : 'gray.300'} />
+              <StarIcon
+                key={i}
+                mr="0.25em"
+                color={i < rating ? '#605DEC' : 'gray.300'}
+              />
             ))}
           <Box as="span" ml="2" color="#7C8DB0" fontSize="sm">
             {reviewCount} reviews

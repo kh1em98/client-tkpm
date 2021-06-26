@@ -1,7 +1,7 @@
 import React from 'react';
 import { OnboardingLayout } from '../components/layouts/OnboardingLayout';
 import LeftSide from '../components/LeftSideLandingPage';
-import RightSide from './betterRegister/RightSide';
+import SignUpForm from './betterRegister/SignUpForm';
 import useForwardAuth from '../hooks/useForwardAuth';
 
 const BetterRegister = () => {
@@ -9,7 +9,7 @@ const BetterRegister = () => {
   return (
     <OnboardingLayout>
       <LeftSide />
-      <RightSide />
+      <SignUpForm />
     </OnboardingLayout>
   );
 };

@@ -1,36 +1,29 @@
 import {
-  GridItem,
   Box,
-  Text,
-  Divider,
-  Input,
   Checkbox,
-  Button,
-  Image,
-  Heading,
-  useToast,
+  Divider,
   FormErrorMessage,
+  GridItem,
+  Image,
+  Text,
+  useToast,
 } from '@chakra-ui/react';
-import google from '../../images/google.svg';
-import React from 'react';
-import StyledInput from '../../components/Input';
-import { ButtonBlock } from '../../components/Button';
-import { Header, MediumText, SubHeader } from '../../components/Typography';
+import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { Link, useHistory } from 'react-router-dom';
-import { ERROR_RESPONSE_END_WITH } from '../../constant';
-import { useLoginMutation } from '../../generated/graphql';
 import { pick } from 'lodash';
-import { sharedUserValidationSchema } from '../../view-models/Account';
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
+import { ButtonBlock } from '../../components/Button';
 import { FormField } from '../../components/formik/FormField';
 import { SubmitButton } from '../../components/formik/SubmitButton';
-import { useAppDispatch } from '../../redux/store';
+import { Header, MediumText, SubHeader } from '../../components/Typography';
+import google from '../../images/google.svg';
 import { signIn } from '../../redux/slices/userSlice';
-import { unwrapResult } from '@reduxjs/toolkit';
+import { useAppDispatch } from '../../redux/store';
+import { sharedUserValidationSchema } from '../../view-models/Account';
 
-export interface SignInForm {
+export interface ISignInForm {
   email: string;
   password: string;
 }
@@ -38,14 +31,14 @@ const signInValidationSchema = Yup.object().shape(
   pick(sharedUserValidationSchema, ['email', 'password']),
 );
 
-const RightSide = () => {
+const SignInForm = () => {
   const toast = useToast();
   const history = useHistory();
   const dispatch = useAppDispatch();
 
   const handleSignIn = async (
-    values: SignInForm,
-    actions: FormikHelpers<SignInForm>,
+    values: ISignInForm,
+    actions: FormikHelpers<ISignInForm>,
   ) => {
     actions.setSubmitting(true);
     try {
@@ -91,7 +84,7 @@ const RightSide = () => {
             }}
             validationSchema={signInValidationSchema}
             onSubmit={handleSignIn}>
-            {(props: FormikProps<SignInForm>): JSX.Element => (
+            {(props: FormikProps<ISignInForm>): JSX.Element => (
               <form onSubmit={props.handleSubmit}>
                 <FormField
                   name="email"
@@ -153,4 +146,4 @@ const RightSide = () => {
   );
 };
 
-export default RightSide;
+export default SignInForm;

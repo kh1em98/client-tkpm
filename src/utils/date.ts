@@ -4,3 +4,12 @@ export const dayDiff = (d1: Date, d2: Date): number => {
 
   return Math.floor((t2 - t1) / (24 * 3600 * 1000));
 };
+
+export const formattedDate = (d: Date) => {
+  return d.toLocaleDateString(undefined, {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};

@@ -1,7 +1,7 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 import React from 'react';
 import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout';
-import CustomerInfo from './contract/Customer';
+import ContractForm from './contract/ContractForm';
 import useIsAuth from '../hooks/useIsAuth';
 
 const Contract = () => {
@@ -22,7 +22,7 @@ const Contract = () => {
           Enter the required information for each contract and be sure that it
           exactly matches your personal information.
         </Text>
-        <CustomerInfo />
+        <ContractForm />
       </Box>
     </AuthenticatedLayout>
   );

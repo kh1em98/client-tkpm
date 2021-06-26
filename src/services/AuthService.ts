@@ -1,6 +1,6 @@
 import { AuthGateway } from '../gateways/AuthGateway';
 import { LoginUser } from '../models/Account';
-import { SignUpForm } from '../pages/betterRegister/RightSide';
+import { ISignUpForm } from '../pages/betterRegister/SignUpForm';
 
 export class AuthService {
   private authGateway: AuthGateway;
@@ -22,7 +22,7 @@ export class AuthService {
     return this.authGateway.getLoginUser();
   }
 
-  public async signUp(body: SignUpForm) {
+  public async signUp(body: ISignUpForm) {
     return this.authGateway.signUp(body);
   }
 

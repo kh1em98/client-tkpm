@@ -22,7 +22,9 @@ export const roomSchema = {
 };
 
 export const dateSchema = {
-  startTime: Yup.date().required(),
+  startTime: Yup.date()
+    .required()
+    .min(new Date(new Date().valueOf() - 1000 * 60 * 60 * 24)),
   endTime: Yup.date()
     .required()
     .test('is-greater', 'end time should be greater', function (value) {

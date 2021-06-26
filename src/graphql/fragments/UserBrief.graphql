@@ -1,6 +1,0 @@
-fragment UserBrief on User {
-  id
-  email
-  image
-  lastName
-}

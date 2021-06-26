@@ -25,3 +25,10 @@ export const transformToLoginUser = (obj) => {
     'role',
   ]) as LoginUser;
 };
+
+export const formatToVnd = (price: number) => {
+  return price.toLocaleString('it-IT', {
+    style: 'currency',
+    currency: 'VND',
+  });
+};

@@ -2,19 +2,15 @@ import { Box, Divider, GridItem, Text, useToast } from '@chakra-ui/react';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import { pick } from 'lodash';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { FormField } from '../../components/formik/FormField';
 import { SubmitButton } from '../../components/formik/SubmitButton';
 import { Header, MediumText, SubHeader } from '../../components/Typography';
-import { useLoginMutation } from '../../generated/graphql';
-import { userSelector } from '../../redux/slices/userSlice';
-import { useAppDispatch } from '../../redux/store';
 import { authService } from '../../services/index';
 import { sharedUserValidationSchema } from '../../view-models/Account';
 
-export interface SignUpForm {
+export interface ISignUpForm {
   email: string;
   username: string;
   password: string;
@@ -31,16 +27,13 @@ const signUpValidationSchema = Yup.object().shape(
   ]),
 );
 
-const RightSide = () => {
+const SignUpForm = () => {
   const toast = useToast();
   const history = useHistory();
-  const [, login] = useLoginMutation();
-  const { isFetching } = useSelector(userSelector);
-  const dispatch = useAppDispatch();
 
   const handleSignUp = async (
-    values: SignUpForm,
-    actions: FormikHelpers<SignUpForm>,
+    values: ISignUpForm,
+    actions: FormikHelpers<ISignUpForm>,
   ) => {
     actions.setSubmitting(true);
     try {
@@ -93,7 +86,7 @@ const RightSide = () => {
             }}
             validationSchema={signUpValidationSchema}
             onSubmit={handleSignUp}>
-            {(props: FormikProps<SignUpForm>): JSX.Element => (
+            {(props: FormikProps<ISignUpForm>): JSX.Element => (
               <form onSubmit={props.handleSubmit}>
                 <FormField
                   name="email"
@@ -146,4 +139,4 @@ const RightSide = () => {
   );
 };
 
-export default RightSide;
+export default SignUpForm;

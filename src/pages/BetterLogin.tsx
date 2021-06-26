@@ -2,14 +2,14 @@ import React from 'react';
 import { OnboardingLayout } from '../components/layouts/OnboardingLayout';
 import LeftSide from '../components/LeftSideLandingPage';
 import useForwardAuth from '../hooks/useForwardAuth';
-import RightSide from './betterLogin/RightSide';
+import SignInForm from './betterLogin/SignInForm';
 
 const BetterLogin = () => {
   useForwardAuth();
   return (
     <OnboardingLayout>
       <LeftSide />
-      <RightSide />
+      <SignInForm />
     </OnboardingLayout>
   );
 };

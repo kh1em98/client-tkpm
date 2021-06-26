@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { AxiosInstance } from 'axios';
 import { LoginUser } from '../models/Account';
-import { SignUpForm } from '../pages/betterRegister/RightSide';
+import { ISignUpForm } from '../pages/betterRegister/SignUpForm';
 import { getDecodedPayload, transformToLoginUser } from '../utils/helper';
 
 const AUTHORIZATION_HEADER = 'Authorization';
@@ -19,7 +19,7 @@ export class AuthGateway {
     this.loadAccessToken();
   }
 
-  public async signUp(body: SignUpForm) {
+  public async signUp(body: ISignUpForm) {
     return await this.restConnector.post('/sign_up', body);
   }
 

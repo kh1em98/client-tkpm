@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import _, { initial } from 'lodash';
 import { Role, Account } from '../../models/Account';
-import { SignInForm } from '../../pages/betterLogin/RightSide';
-import { SignUpForm } from '../../pages/betterRegister/RightSide';
+import { ISignInForm } from '../../pages/betterLogin/SignInForm';
 import { authService } from '../../services';
 import { transformToLoginUser } from '../../utils/helper';
 
@@ -23,12 +22,12 @@ const initialState = {
   age: 0,
   phone: '',
   role: Role.USER,
-  isFetching: false,
+  isFetching: true,
 } as UserState;
 
 export const signIn = createAsyncThunk(
   'users/sign_in',
-  async (body: SignInForm, thunkAPI) => {
+  async (body: ISignInForm, thunkAPI) => {
     try {
       const user = await authService.loginWithEmail(body);
       console.log('user : ', user);
@@ -51,6 +50,7 @@ export const asyncSignOut = createAsyncThunk(
 export const getLoginUser = createAsyncThunk(
   'users/get_login/user',
   async (body, thunkAPI) => {
+    console.log('get login user');
     const loginUser = authService.getLoginUser();
     return loginUser;
   },
@@ -77,6 +77,7 @@ const { reducer, actions } = createSlice({
         state.isFetching = true;
       })
       .addCase(getLoginUser.fulfilled, (state, action) => {
+        console.log('get login user fulfill');
         state.isFetching = false;
         if (action.payload !== null) {
           Object.assign(state, action.payload);

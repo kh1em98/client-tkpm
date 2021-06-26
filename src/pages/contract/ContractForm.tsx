@@ -13,16 +13,22 @@ import {
   dateSchema,
   sharedUserValidationSchema,
 } from '../../view-models/Account';
+import { useAppSelector, useAppDispatch } from '../../redux/store';
+import { formatToVnd } from '../../utils/helper';
+import { Redirect, useHistory } from 'react-router-dom';
+import { createContract } from '../../redux/slices/roomSlice';
+import { useEffect } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface ContractForm {
-  userId?: number;
-  email?: string;
-  phone?: string;
-  age?: string;
-  roomId?: number;
+  userId: number;
+  email: string;
+  phone: string;
+  age: number;
+  roomId: number;
   startTime: Date;
   endTime: Date;
-  pricePerDay?: number;
+  pricePerDay: number;
 }
 
 const contractValidationSchema = Yup.object().shape(
@@ -30,23 +36,48 @@ const contractValidationSchema = Yup.object().shape(
     {},
     pick(sharedUserValidationSchema, ['email', 'age', 'phone']),
     dateSchema,
-    roomSchema
   ),
 );
 
 const CustomerInfo = () => {
   const toast = useToast();
-  const handleCreateContract = async (values: any, actions: any) => {
+  const history = useHistory();
+  const dispatch = useAppDispatch();
+  const userState = useAppSelector((state) => state.user);
+  const { roomSelected, errorMessage } = useAppSelector((state) => state.room);
+
+  if (!roomSelected?.id) {
+    return <Redirect to="/" />;
+  }
+  const handleCreateContract = async (values: ContractForm, actions: any) => {
     actions.setSubmitting(true);
     try {
-      const days = dayDiff(
+      const daysStay = dayDiff(
         new Date(values.startTime),
         new Date(values.endTime),
       );
 
-      console.log('diff : ', days);
+      const resultAction = await dispatch(
+        createContract({
+          userId: userState.id,
+          roomId: roomSelected.id,
+          price: values.pricePerDay * daysStay,
+          startTime: values.startTime,
+          endTime: values.endTime,
+        }),
+      );
 
-      console.log(values);
+      unwrapResult(resultAction);
+
+      toast({
+        title: 'Success',
+        description:
+          'Sent a request to create contract. Wait an admin to confirm',
+        status: 'success',
+        isClosable: true,
+      });
+
+      history.push('/history');
     } catch (e) {
       actions.setSubmitting(false);
 
@@ -68,16 +99,17 @@ const CustomerInfo = () => {
 
         <Formik
           initialValues={{
-            email: '',
-            userId: 1,
-            phone: '',
-            age: '',
+            email: userState.email,
+            userId: userState.id,
+            phone: userState.phone,
+            age: userState.age,
             startTime: new Date(),
             endTime: new Date(),
+            pricePerDay: roomSelected.price,
+            roomId: roomSelected.id,
           }}
           validationSchema={contractValidationSchema}
-          onSubmit={handleCreateContract}
-        >
+          onSubmit={handleCreateContract}>
           {(props: FormikProps<ContractForm>): JSX.Element => (
             <form onSubmit={props.handleSubmit}>
               <Box display="flex" alignItems="flex-start">
@@ -87,14 +119,12 @@ const CustomerInfo = () => {
                     name="email"
                     placeholder="Email Address *"
                     type="email"
-                    // label="Email"
                     width="300px"
-                    borderColor="#A1B0CC"
                     padding="0.5em 0.75em"
                     fontSize="18px"
                     height="48px"
-                    color="#7C8DB0"
-                    _focus={{ borderColor: '#605DEC' }}
+                    disabled
+                    _disabled={{ borderColor: '#A1B0CC', color: '#7C8DB0' }}
                   />
                 </Box>
                 <Box>
@@ -104,12 +134,11 @@ const CustomerInfo = () => {
                     placeholder="Phone Number *"
                     type="text"
                     width="300px"
-                    borderColor="#A1B0CC"
                     padding="0.5em 0.75em"
                     fontSize="18px"
                     height="48px"
-                    color="#7C8DB0"
-                    _focus={{ borderColor: '#605DEC' }}
+                    disabled
+                    _disabled={{ borderColor: '#A1B0CC', color: '#7C8DB0' }}
                   />
                 </Box>
                 <Box>
@@ -118,14 +147,12 @@ const CustomerInfo = () => {
                     name="age"
                     placeholder="Your Age *"
                     type="number"
-                    // label="Age"
                     width="150px"
-                    borderColor="#A1B0CC"
                     padding="0.5em 0.75em"
                     fontSize="18px"
                     height="48px"
-                    color="#7C8DB0"
-                    _focus={{ borderColor: '#605DEC' }}
+                    disabled
+                    _disabled={{ borderColor: '#A1B0CC', color: '#7C8DB0' }}
                   />
                 </Box>
               </Box>
@@ -136,20 +163,17 @@ const CustomerInfo = () => {
 
               <Box display="flex" alignItems="flex-start">
                 <Box>
-                  {' '}
                   <FormField
                     mr="4em"
                     name="roomId"
                     placeholder="Room id *"
                     type="text"
-                    // label="Age"
                     width="300px"
-                    borderColor="#A1B0CC"
                     padding="0.5em 0.75em"
                     fontSize="18px"
                     height="48px"
-                    color="#7C8DB0"
-                    _focus={{ borderColor: '#605DEC' }}
+                    disabled
+                    _disabled={{ borderColor: '#A1B0CC', color: '#7C8DB0' }}
                   />
                 </Box>
                 <Box>
@@ -158,18 +182,15 @@ const CustomerInfo = () => {
                     placeholder="Price per day"
                     type="text"
                     tag="currency"
-                    // label="Age"
                     width="300px"
-                    borderColor="#A1B0CC"
                     padding="0.5em 0.75em"
                     fontSize="18px"
                     height="48px"
-                    color="#7C8DB0"
-                    _focus={{ borderColor: '#605DEC' }}
+                    disabled
+                    _disabled={{ borderColor: '#A1B0CC', color: '#7C8DB0' }}
                   />
                 </Box>
               </Box>
-              <Box display="flex" justifyContent="flex-start"></Box>
 
               <Box display="flex" alignItems="flex-start">
                 <Box>
@@ -228,7 +249,15 @@ const CustomerInfo = () => {
                   color="#6E7491"
                   fontSize="1.125em"
                   fontWeight="semibold">
-                  {props!.values!.pricePerDay! * 3}
+                  {roomSelected
+                    ? formatToVnd(
+                        roomSelected?.price *
+                          dayDiff(
+                            new Date(props.values.startTime),
+                            new Date(props.values.endTime),
+                          ),
+                      )
+                    : 0}
                   {/* 700,000 VND */}
                 </Text>
               </Text>
