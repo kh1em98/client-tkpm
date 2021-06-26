@@ -1,22 +1,16 @@
-import { Heading, Box, Image, Text, Grid } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Grid, Heading, Image, Text } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout';
 import RoomComponent from '../components/Room';
-import shanghai from '../images/shanghai.png';
-import sydney from '../images/sydney.png';
-import kyoto from '../images/kyoto.png';
-import world from '../images/world.svg';
-import RatingPreview from './home/RatingPreview';
 import useIsAuth from '../hooks/useIsAuth';
-import { useAppSelector, useAppDispatch } from '../redux/store';
-import { useEffect } from 'react';
-import {
-  getRoomList,
-  roomSelector,
-  selectRoom,
-} from '../redux/slices/roomSlice';
+import world from '../images/world.svg';
+import { Role } from '../models/Account';
 import { Room } from '../models/Room';
-import { useHistory } from 'react-router-dom';
+import { getRoomList, selectRoom } from '../redux/slices/roomSlice';
+import { useAppDispatch, useAppSelector } from '../redux/store';
+import AdminPanel from './home/AdminPanel';
+import RatingPreview from './home/RatingPreview';
 
 export default function Home() {
   useIsAuth();
@@ -24,6 +18,7 @@ export default function Home() {
   const history = useHistory();
 
   const roomState = useAppSelector((state) => state.room);
+  const userState = useAppSelector((state) => state.user);
 
   const selectRoomHandler = (id: number) => {
     dispatch(selectRoom(id));
@@ -38,7 +33,7 @@ export default function Home() {
 
   return (
     <AuthenticatedLayout>
-      <Image src={world} />
+      {userState.role === Role.ADMIN ? <Image src={world} /> : <AdminPanel />}
 
       <Box mt="1em">
         <Heading

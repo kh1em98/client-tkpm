@@ -36,7 +36,7 @@ const Navbar = () => {
           _hover={{ color: '#407AEA' }}
           cursor="pointer"
           mr="4em">
-          <Link to="/">Hotels</Link>
+          <Link to="/">Rooms</Link>
         </Text>
         <Text
           color="#7C8DB0"

@@ -30,10 +30,8 @@ export const signIn = createAsyncThunk(
   async (body: ISignInForm, thunkAPI) => {
     try {
       const user = await authService.loginWithEmail(body);
-      console.log('user : ', user);
       return user;
     } catch (error) {
-      console.log('thunk error : ', error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   },

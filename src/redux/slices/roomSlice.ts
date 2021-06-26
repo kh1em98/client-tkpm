@@ -33,6 +33,14 @@ export const createContract = createAsyncThunk(
   },
 );
 
+export const createRoom = createAsyncThunk(
+  'room/create',
+  async (body: Room, thunkAPI) => {
+    const room = await roomService.createRoom(body);
+    return room;
+  },
+);
+
 const { reducer, actions } = createSlice({
   name: 'room',
   initialState,
@@ -73,11 +81,14 @@ const { reducer, actions } = createSlice({
         });
 
         state.isFetching = false;
+      })
+      .addCase(createRoom.pending, (state, action) => {
+        state.isFetching = true;
+      })
+      .addCase(createRoom.fulfilled, (state, action) => {
+        state.isFetching = false;
+        state.roomList.push(action.payload);
       });
-    // .addCase(createContract.rejected, (state, action) => {
-    //   state.errorMessage = action.error.message!;
-    //   state.isFetching = false;
-    // });
   },
 });
 

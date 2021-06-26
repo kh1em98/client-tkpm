@@ -1,0 +1,65 @@
+.MuiSvgIcon-root {
+  fill: currentColor;
+  font-size: 3.5rem;
+  color: green;
+}
+.success-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.success-top > h2 {
+  width: 198px;
+  height: 27px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  text-align: center;
+  letter-spacing: -0.035em;
+  color: #4f4f4f;
+}
+.img {
+  width: 86%;
+  height: 224.4px;
+  border-radius: 12px;
+  border: 2px solid #dadaff;
+}
+.success-bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 86%;
+  background: #f6f8fb;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+.success-bottom > p {
+  overflow-y: hidden;
+  width: 76%;
+  height: 12px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 8px;
+  line-height: 12px;
+  text-align: center;
+  letter-spacing: -0.035em;
+  color: #4f4f4f;
+}
+.success-bottom > button {
+  width: 74px;
+  height: 98%;
+  background: #605dec;
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 12px;
+  text-align: center;
+  letter-spacing: -0.035em;
+}
