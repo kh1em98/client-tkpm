@@ -1,7 +1,6 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 import React from 'react';
 import RoomForm from './RoomForm';
-import UploadImage from '../../components/upload/UploadImage';
 import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout';
 
 const CreateRoom = () => {

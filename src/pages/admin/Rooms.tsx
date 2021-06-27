@@ -1,9 +1,15 @@
-import { Box, Grid, Heading, Image, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Grid,
+  Heading,
+  Image,
+  Text,
+  useAccordionDescendantsContext,
+} from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Router, useHistory } from 'react-router-dom';
 import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout';
 import RoomComponent from '../../components/Room';
-import useIsAuth from '../../hooks/useIsAuth';
 import world from '../images/world.svg';
 import { Role } from '../../models/Account';
 import { Room } from '../../models/Room';
@@ -13,22 +19,21 @@ import CreateRoom from './CreateRoom';
 import RatingPreview from '../home/RatingPreview';
 
 export default function Rooms() {
-  console.log('hello');
-  useIsAuth();
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   const roomState = useAppSelector((state) => state.room);
   const userState = useAppSelector((state) => state.user);
 
-  if (userState.role !== Role.ADMIN) {
-    console.log('deo phai admin');
-    history.push('/');
-  }
-
   useEffect(() => {
-    dispatch(getRoomList());
-  }, []);
+    if (!userState.isFetching) {
+      if (userState.role === Role.ADMIN) {
+        dispatch(getRoomList());
+      } else {
+        history.push('/sign-in');
+      }
+    }
+  }, [userState.role, userState.isFetching]);
 
   return (
     <AuthenticatedLayout>
@@ -44,7 +49,7 @@ export default function Rooms() {
           </Text>
         </Heading>
 
-        {roomState.isFetching ? (
+        {roomState.isFetching || userState.isFetching ? (
           <h2>Loading....</h2>
         ) : (
           <Grid

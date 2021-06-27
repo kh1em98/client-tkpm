@@ -48,7 +48,6 @@ const { reducer, actions } = createSlice({
   reducers: {
     selectRoom: (state, action) => {
       if (state?.roomSelected?.id === action.payload) {
-        console.log('return, deo tim nua');
         return;
       }
 
@@ -63,7 +62,7 @@ const { reducer, actions } = createSlice({
         state.isFetching = true;
       })
       .addCase(getRoomList.fulfilled, (state, action) => {
-        state.roomList = [...state.roomList, ...action.payload];
+        state.roomList = action.payload;
         state.isFetching = false;
       })
       .addCase(getRoomList.rejected, (state, action) => {
@@ -88,7 +87,7 @@ const { reducer, actions } = createSlice({
       })
       .addCase(createRoom.fulfilled, (state, action) => {
         state.isFetching = false;
-        state.roomList.push(action.payload);
+        // state.roomList.push(action.payload);
       });
   },
 });

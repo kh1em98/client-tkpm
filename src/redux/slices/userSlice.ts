@@ -67,7 +67,6 @@ const { reducer, actions } = createSlice({
         state.isFetching = true;
       })
       .addCase(asyncSignOut.fulfilled, (state, action) => {
-        console.log('action payload : ', action.payload);
         Object.assign(state, action.payload);
         state.isFetching = false;
       })

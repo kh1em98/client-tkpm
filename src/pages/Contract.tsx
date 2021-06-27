@@ -2,10 +2,23 @@ import { Box, Heading, Text } from '@chakra-ui/react';
 import React from 'react';
 import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout';
 import ContractForm from './contract/ContractForm';
-import useIsAuth from '../hooks/useIsAuth';
+import { useAppSelector } from '../redux/store';
+import { useEffect } from 'react';
+import { Role } from '../models/Account';
+import { useHistory } from 'react-router';
 
 const Contract = () => {
-  useIsAuth();
+  const { isFetching, role, id } = useAppSelector((state) => state.user);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!isFetching) {
+      if (role === Role.USER && id) {
+      } else {
+        history.push('/sign-in');
+      }
+    }
+  }, [isFetching, role, id]);
 
   return (
     <AuthenticatedLayout>

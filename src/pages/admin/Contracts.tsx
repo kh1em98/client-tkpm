@@ -1,15 +1,27 @@
-import { Table, Thead, Tr, Th, Tbody, Spinner } from '@chakra-ui/react';
+import {
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Spinner,
+  useToast,
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '../../components/layouts/AuthenticatedLayout';
-import useIsAuth from '../../hooks/useIsAuth';
-import { Contract } from '../../models/Contract';
+import { Contract, ContractStatus } from '../../models/Contract';
 import { contractService } from '../../services';
 import ContractComponent from '../history/Contract';
+import { useAppSelector } from '../../redux/store';
+import { Role } from '../../models/Account';
+import { useHistory } from 'react-router';
 
 const Contracts = () => {
-  useIsAuth();
+  const { role, isFetching } = useAppSelector((state) => state.user);
   const [contractList, setContractList] = useState<Array<Contract>>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const history = useHistory();
+  const toast = useToast();
 
   useEffect(() => {
     const getContractList = async () => {
@@ -19,8 +31,50 @@ const Contracts = () => {
       setLoading(false);
     };
 
-    getContractList();
-  }, []);
+    if (role === Role.ADMIN) {
+      getContractList();
+    } else {
+      history.push('/sign-in');
+    }
+  }, [role, isFetching]);
+
+  const approveHandler = async (id: number) => {
+    try {
+      await contractService.approveContract(id);
+      const updatedContract = contractList.find(
+        (contract) => contract.id === id,
+      );
+      if (updatedContract) {
+        updatedContract.status = ContractStatus.SUCCESS;
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.message,
+        status: 'error',
+        isClosable: true,
+      });
+    }
+  };
+
+  const rejectHandler = async (id: number) => {
+    try {
+      await contractService.rejectContract(id);
+      const updatedContract = contractList.find(
+        (contract) => contract.id === id,
+      );
+      if (updatedContract) {
+        updatedContract.status = ContractStatus.REJECTED;
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.message,
+        status: 'error',
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <AuthenticatedLayout>
@@ -35,7 +89,7 @@ const Contracts = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {loading ? (
+          {loading || isFetching ? (
             <Spinner size="xl" />
           ) : (
             contractList.map((contract: Contract) => (
@@ -45,6 +99,8 @@ const Contracts = () => {
                 startTime={contract.startTime}
                 endTime={contract.endTime}
                 status={contract.status}
+                onApprove={approveHandler}
+                onReject={rejectHandler}
               />
             ))
           )}

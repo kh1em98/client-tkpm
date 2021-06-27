@@ -14,6 +14,8 @@ interface ContractProps {
   startTime?: Date;
   endTime?: Date;
   status?: string;
+  onApprove?: (id: number) => {};
+  onReject?: (id: number) => {};
 }
 
 const Contract: FC<ContractProps> = ({
@@ -22,16 +24,11 @@ const Contract: FC<ContractProps> = ({
   startTime = new Date('2021-06-26T07:59:00.000Z'),
   endTime = new Date('2021-06-28T07:59:00.000Z'),
   status = ContractStatus.SUCCESS,
+  onApprove,
+  onReject,
 }) => {
   const userState = useAppSelector((state) => state.user);
 
-  const approveHandler = async () => {
-    await contractService.approveContract(id);
-  };
-
-  const rejectHandler = async () => {
-    await contractService.rejectContract(id);
-  };
   return (
     <Tr _hover={{ bg: '#F6F6FE', cursor: 'pointer' }}>
       <Td>#{id}</Td>
@@ -45,6 +42,7 @@ const Contract: FC<ContractProps> = ({
               colorScheme="green"
               aria-label="Call Segun"
               size="sm"
+              onClick={() => onApprove!(id)}
               icon={<CheckIcon />}
             />
             <IconButton
@@ -52,6 +50,7 @@ const Contract: FC<ContractProps> = ({
               aria-label="Call Segun"
               size="sm"
               ml="1em"
+              onClick={() => onReject!(id)}
               icon={<CloseIcon />}
             />
           </>

@@ -1,15 +1,19 @@
 import { Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout';
-import useIsAuth from '../hooks/useIsAuth';
+import { Role } from '../models/Account';
+
 import { Contract } from '../models/Contract';
+import { useAppSelector } from '../redux/store';
 import { contractService } from '../services/index';
 import ContractComponent from './history/Contract';
 
 const History = () => {
-  useIsAuth();
   const [contractList, setContractList] = useState<Array<Contract>>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { isFetching, role, id } = useAppSelector((state) => state.user);
+  const history = useHistory();
 
   useEffect(() => {
     const getContractList = async () => {
@@ -19,8 +23,14 @@ const History = () => {
       setLoading(false);
     };
 
-    getContractList();
-  }, []);
+    if (!isFetching) {
+      if (role === Role.USER && id) {
+        getContractList();
+      } else {
+        history.push('/sign-in');
+      }
+    }
+  }, [isFetching, role, id]);
   return (
     <AuthenticatedLayout>
       <Table mt="6em" variant="simple">

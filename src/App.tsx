@@ -1,6 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Role } from './models/Account';
 import Contracts from './pages/admin/Contracts';
 import CreateRoom from './pages/admin/CreateRoom';
 import AdminRooms from './pages/admin/Rooms';
@@ -14,7 +15,7 @@ import { useAppDispatch, useAppSelector } from './redux/store';
 import customTheme from './utils/theme';
 
 function App() {
-  const { isFetching } = useAppSelector((state) => state.user);
+  const { isFetching, role } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -25,41 +26,30 @@ function App() {
     <ChakraProvider theme={customTheme}>
       <BrowserRouter>
         <Switch>
-          {isFetching ? (
-            <h2>Loading...</h2>
-          ) : (
-            <>
-              <Route path="/contract" exact>
-                <Contract />
-              </Route>
-              <Route path="/history" exact>
-                <History />
-              </Route>
-              <Route path="/" exact>
-                <Home />
-              </Route>
-              <Route path="/sign-in" exact>
-                <BetterLogin />
-              </Route>
-              <Route path="/sign-up" exact>
-                <BetterRegister />
-              </Route>
-              <Route path="/admin/rooms" exact>
-                <AdminRooms />
-              </Route>
-              <Route path="/admin/create-room" exact>
-                <CreateRoom />
-              </Route>
-
-              <Route path="/admin/contracts" exact>
-                <Contracts />
-              </Route>
-
-              {/* <Route path="*">
-                <h1>404 Not Found</h1>
-              </Route> */}
-            </>
-          )}
+          <Route path="/admin/rooms" exact>
+            <AdminRooms />
+          </Route>
+          <Route path="/admin/create-room" exact>
+            <CreateRoom />
+          </Route>
+          <Route path="/admin/contracts" exact>
+            <Contracts />
+          </Route>
+          <Route path="/contract" exact>
+            <Contract />
+          </Route>
+          <Route path="/history" exact>
+            <History />
+          </Route>
+          <Route path="/sign-in" exact>
+            <BetterLogin />
+          </Route>
+          <Route path="/sign-up" exact>
+            <BetterRegister />
+          </Route>
+          <Route path="/" exact>
+            <Home />
+          </Route>
         </Switch>
       </BrowserRouter>
     </ChakraProvider>

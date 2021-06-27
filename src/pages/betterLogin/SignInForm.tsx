@@ -19,6 +19,7 @@ import { FormField } from '../../components/formik/FormField';
 import { SubmitButton } from '../../components/formik/SubmitButton';
 import { Header, MediumText, SubHeader } from '../../components/Typography';
 import google from '../../images/google.svg';
+import { Role } from '../../models/Account';
 import { signIn } from '../../redux/slices/userSlice';
 import { useAppDispatch } from '../../redux/store';
 import { sharedUserValidationSchema } from '../../view-models/Account';
@@ -45,9 +46,11 @@ const SignInForm = () => {
       const resultAction = await dispatch(signIn(values));
       const payload = unwrapResult(resultAction);
 
-      console.log('payload : ', payload);
-
-      history.push('/');
+      if (payload?.role === Role.ADMIN) {
+        history.push('/admin/rooms');
+      } else {
+        history.push('/');
+      }
     } catch (errorMessage) {
       actions.setSubmitting(false);
 
