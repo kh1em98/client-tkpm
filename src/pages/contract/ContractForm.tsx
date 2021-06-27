@@ -65,8 +65,8 @@ const CustomerInfo = () => {
           userId: userState.accountId,
           roomId: roomSelected.roomId,
           price: values.pricePerDay * daysStay,
-          startTime: values.startTime,
-          endTime: values.endTime,
+          startTime: new Date(values.startTime).toISOString(),
+          endTime: new Date(values.endTime).toISOString(),
         }),
       );
 

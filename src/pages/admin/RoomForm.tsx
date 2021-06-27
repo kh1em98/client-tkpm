@@ -151,7 +151,7 @@ const RoomForm = () => {
               width="500px"
               bg="#605DEC"
               _hover={{ bg: '#4543b3' }}>
-              <MediumText color="white">Create Contract</MediumText>
+              <MediumText color="white">Create room</MediumText>
             </SubmitButton>
           </form>
         )}

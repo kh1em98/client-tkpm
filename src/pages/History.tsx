@@ -18,7 +18,7 @@ const History = () => {
   useEffect(() => {
     const getContractList = async () => {
       setLoading(true);
-      // const contractList = await contractService.getContractList();
+      const contractList = await contractService.getContractList();
       setContractList(contractList);
       setLoading(false);
     };
@@ -53,8 +53,6 @@ const History = () => {
               status={contract.status}
             />
           ))}
-          <ContractComponent />
-          <ContractComponent />
         </Tbody>
       </Table>
     </AuthenticatedLayout>

@@ -51,6 +51,10 @@ const { reducer, actions } = createSlice({
         return;
       }
 
+      if (state.roomSelected?.status === RoomStatus.BOOKED) {
+        return;
+      }
+
       state.roomSelected = state.roomList.find(
         (room: Room) => room.roomId === action.payload,
       );

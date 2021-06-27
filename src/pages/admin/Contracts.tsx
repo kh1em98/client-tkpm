@@ -26,7 +26,7 @@ const Contracts = () => {
   useEffect(() => {
     const getContractList = async () => {
       setLoading(true);
-      // const contractList = await contractService.getProgressingContractList();
+      const contractList = await contractService.getProgressingContractList();
       setContractList(contractList);
       setLoading(false);
     };
@@ -41,12 +41,17 @@ const Contracts = () => {
   const approveHandler = async (contractId: string) => {
     try {
       await contractService.approveContract(contractId, accountId);
-      const updatedContract = contractList.find(
-        (contract) => contract.contractId === contractId,
+      setContractList((prevContractList) =>
+        prevContractList.filter(
+          (contract) => contract.contractId !== contractId,
+        ),
       );
-      if (updatedContract) {
-        updatedContract.status = ContractStatus.COMPLETED;
-      }
+      toast({
+        title: 'Success',
+        description: 'Approve contract successfully',
+        status: 'success',
+        isClosable: true,
+      });
     } catch (error) {
       toast({
         title: 'Error',
@@ -60,12 +65,17 @@ const Contracts = () => {
   const rejectHandler = async (contractId: string) => {
     try {
       await contractService.rejectContract(contractId, accountId);
-      const updatedContract = contractList.find(
-        (contract) => contract.contractId === contractId,
+      setContractList((prevContractList) =>
+        prevContractList.filter(
+          (contract) => contract.contractId !== contractId,
+        ),
       );
-      if (updatedContract) {
-        updatedContract.status = ContractStatus.CANCEL;
-      }
+      toast({
+        title: 'Success',
+        description: 'Reject contract successfully',
+        status: 'success',
+        isClosable: true,
+      });
     } catch (error) {
       toast({
         title: 'Error',
@@ -104,8 +114,6 @@ const Contracts = () => {
               />
             ))
           )}
-          <ContractComponent />
-          <ContractComponent />
         </Tbody>
       </Table>
     </AuthenticatedLayout>

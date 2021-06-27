@@ -2,7 +2,6 @@ import _ from 'lodash';
 import { LoginUser, Account } from '../models/Account';
 
 export const getDecodedPayload = (token: string) => {
-  console.log('token : ', token);
   let payload: any = window.atob(token);
   payload = JSON.parse(payload);
 

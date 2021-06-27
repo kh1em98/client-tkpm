@@ -24,7 +24,7 @@ export class ContractGateway {
 
   public async approve(contractId: string, userId: string): Promise<void> {
     const { data } = await this.restConnector.put('/contract', {
-      id: contractId,
+      contractId,
       status: ContractStatus.COMPLETED,
       adminId: userId,
     });

@@ -22,7 +22,7 @@ const Room: FC<RoomProps> = ({
   image,
   name,
   description = "Viet Nam's most international city",
-  reviewCount = Math.floor(Math.random() * 100),
+  reviewCount = Math.floor(Math.random() * 5),
   rating,
   status,
   onSelectRoom,

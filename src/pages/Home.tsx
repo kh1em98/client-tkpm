@@ -1,11 +1,19 @@
-import { Box, Grid, Heading, Image, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Grid,
+  Heading,
+  Image,
+  Text,
+  toast,
+  useToast,
+} from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AuthenticatedLayout from '../components/layouts/AuthenticatedLayout';
 import RoomComponent from '../components/Room';
 import world from '../images/world.svg';
 import { Role } from '../models/Account';
-import { Room } from '../models/Room';
+import { Room, RoomStatus } from '../models/Room';
 import { getRoomList, selectRoom } from '../redux/slices/roomSlice';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import CreateRoom from './admin/CreateRoom';
@@ -14,13 +22,30 @@ import RatingPreview from './home/RatingPreview';
 export default function Home() {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const toast = useToast();
 
   const roomState = useAppSelector((state) => state.room);
   const userState = useAppSelector((state) => state.user);
 
-  const selectRoomHandler = (id: number) => {
-    dispatch(selectRoom(id));
-    history.push('/contract');
+  const selectRoomHandler = (roomId: string) => {
+    const roomToSelect = roomState.roomList.find(
+      (room) => room.roomId === roomId,
+    );
+    if (roomToSelect?.status === RoomStatus.BOOKED) {
+      toast({
+        title: 'Error',
+        description: 'This room is already booked. Select another room',
+        status: 'error',
+        isClosable: true,
+      });
+      return;
+    }
+    if (roomToSelect?.roomId === roomState.roomSelected?.roomId) {
+      history.push('/contract');
+    } else {
+      dispatch(selectRoom(roomId));
+      history.push('/contract');
+    }
   };
 
   useEffect(() => {

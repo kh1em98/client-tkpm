@@ -35,7 +35,7 @@ function Upload({ imageUrl, setImageUrl }) {
     try {
       setIsUploading(true);
       const response = await uploadGateway.uploadImage(file);
-      setImageUrl(response);
+      setImageUrl(response.url);
     } catch (error) {
       console.log('error upload : ', error);
     } finally {
@@ -48,7 +48,7 @@ function Upload({ imageUrl, setImageUrl }) {
       setIsUploading(true);
       const file = e.target.files[0];
       const response = await uploadGateway.uploadImage(file);
-      setImageUrl(response);
+      setImageUrl(response.url);
     } catch (error) {
       console.log('error upload : ', error);
     } finally {

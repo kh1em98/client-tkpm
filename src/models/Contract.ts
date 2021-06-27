@@ -17,7 +17,8 @@ export interface Contract {
 export interface ContractCreateInput {
   userId: string;
   roomId: string;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   price: number;
+  adminId?: string;
 }

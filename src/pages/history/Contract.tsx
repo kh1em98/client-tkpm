@@ -29,10 +29,10 @@ const Contract: FC<ContractProps> = ({
 
   return (
     <Tr _hover={{ bg: '#F6F6FE', cursor: 'pointer' }}>
-      <Td>#{contractId}</Td>
+      <Td>{contractId}</Td>
       <Td>{roomId}</Td>
-      <Td>{formattedDate(startTime)}</Td>
-      <Td>{formattedDate(endTime)}</Td>
+      <Td>{formattedDate(new Date(startTime))}</Td>
+      <Td>{formattedDate(new Date(endTime))}</Td>
       <Td>
         {userState.role === Role.ADMIN ? (
           <>

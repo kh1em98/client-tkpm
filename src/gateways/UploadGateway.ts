@@ -8,7 +8,11 @@ export class UploadGateway {
   }
 
   public async uploadImage(file) {
-    const { data } = await this.restConnector.post('/upload', file);
+    const formData = new FormData();
+    formData.append('image', file, `${Date.now()}.jpg`);
+
+    const { data } = await this.restConnector.post('/upload', formData);
+
     // return new Promise((resolve) => {
     //   setTimeout(() => {
     //     resolve(
