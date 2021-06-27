@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Room, RoomStatus } from '../../models/Room';
 import { roomService, contractService } from '../../services/index';
-import { Contract } from '../../models/Contract';
+import { Contract, ContractCreateInput } from '../../models/Contract';
 import { IRoomForm } from '../../pages/admin/RoomForm';
 
 interface RoomState {
@@ -28,7 +28,7 @@ export const getRoomList = createAsyncThunk(
 
 export const createContract = createAsyncThunk(
   'contract/create',
-  async (body: Contract, thunkAPI) => {
+  async (body: ContractCreateInput, thunkAPI) => {
     const contract = await contractService.createContract(body);
     return contract;
   },
@@ -47,12 +47,12 @@ const { reducer, actions } = createSlice({
   initialState,
   reducers: {
     selectRoom: (state, action) => {
-      if (state?.roomSelected?.id === action.payload) {
+      if (state?.roomSelected?.roomId === action.payload) {
         return;
       }
 
       state.roomSelected = state.roomList.find(
-        (room: Room) => room.id === action.payload,
+        (room: Room) => room.roomId === action.payload,
       );
     },
   },
@@ -74,7 +74,7 @@ const { reducer, actions } = createSlice({
       })
       .addCase(createContract.fulfilled, (state, action) => {
         state.roomList = state.roomList.map((room: Room) => {
-          if (room.id === state.roomSelected!.id) {
+          if (room.roomId === state.roomSelected!.roomId) {
             room.status = RoomStatus.BOOKED;
           }
           return room;

@@ -4,16 +4,16 @@ export enum RoomStatus {
 }
 
 export interface Room {
-  id: number;
+  roomId: string;
   name: string;
   price: number;
   status: RoomStatus;
-  description?: string;
+  description: string;
   rate: number;
   image: string;
 }
 
-export interface RoomForm {
+export interface CreateRoomInput {
   name: string;
   price: number;
   status: RoomStatus;

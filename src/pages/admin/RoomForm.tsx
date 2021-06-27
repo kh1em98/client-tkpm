@@ -34,7 +34,6 @@ const RoomForm = () => {
     values: IRoomForm,
     actions: FormikHelpers<IRoomForm>,
   ) => {
-    console.log('create room ne');
     actions.setSubmitting(true);
     try {
       if (imageUrl === '') {

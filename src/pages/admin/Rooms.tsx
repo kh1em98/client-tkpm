@@ -60,7 +60,7 @@ export default function Rooms() {
             {roomState.roomList.map((room: Room) => {
               return (
                 <RoomComponent
-                  id={room.id}
+                  roomId={room.roomId}
                   name={room.name}
                   price={room.price}
                   description={room.description}

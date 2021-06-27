@@ -17,7 +17,7 @@ import { Role } from '../../models/Account';
 import { useHistory } from 'react-router';
 
 const Contracts = () => {
-  const { role, isFetching } = useAppSelector((state) => state.user);
+  const { role, isFetching, accountId } = useAppSelector((state) => state.user);
   const [contractList, setContractList] = useState<Array<Contract>>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const history = useHistory();
@@ -38,38 +38,38 @@ const Contracts = () => {
     }
   }, [role, isFetching]);
 
-  const approveHandler = async (id: number) => {
+  const approveHandler = async (contractId: string) => {
     try {
-      await contractService.approveContract(id);
+      await contractService.approveContract(contractId, accountId);
       const updatedContract = contractList.find(
-        (contract) => contract.id === id,
+        (contract) => contract.contractId === contractId,
       );
       if (updatedContract) {
-        updatedContract.status = ContractStatus.SUCCESS;
+        updatedContract.status = ContractStatus.COMPLETED;
       }
     } catch (error) {
       toast({
         title: 'Error',
-        description: error.message,
+        description: (error as any).message,
         status: 'error',
         isClosable: true,
       });
     }
   };
 
-  const rejectHandler = async (id: number) => {
+  const rejectHandler = async (contractId: string) => {
     try {
-      await contractService.rejectContract(id);
+      await contractService.rejectContract(contractId, accountId);
       const updatedContract = contractList.find(
-        (contract) => contract.id === id,
+        (contract) => contract.contractId === contractId,
       );
       if (updatedContract) {
-        updatedContract.status = ContractStatus.REJECTED;
+        updatedContract.status = ContractStatus.CANCEL;
       }
     } catch (error) {
       toast({
         title: 'Error',
-        description: error.message,
+        description: (error as any).message,
         status: 'error',
         isClosable: true,
       });
@@ -94,8 +94,8 @@ const Contracts = () => {
           ) : (
             contractList.map((contract: Contract) => (
               <ContractComponent
-                id={contract.id}
-                roomId={contract.id}
+                contractId={contract.contractId}
+                roomId={contract.contractId}
                 startTime={contract.startTime}
                 endTime={contract.endTime}
                 status={contract.status}

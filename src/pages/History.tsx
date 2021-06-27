@@ -12,7 +12,7 @@ import ContractComponent from './history/Contract';
 const History = () => {
   const [contractList, setContractList] = useState<Array<Contract>>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { isFetching, role, id } = useAppSelector((state) => state.user);
+  const { isFetching, role, accountId } = useAppSelector((state) => state.user);
   const history = useHistory();
 
   useEffect(() => {
@@ -24,13 +24,13 @@ const History = () => {
     };
 
     if (!isFetching) {
-      if (role === Role.USER && id) {
+      if (role === Role.USER && accountId) {
         getContractList();
       } else {
         history.push('/sign-in');
       }
     }
-  }, [isFetching, role, id]);
+  }, [isFetching, role, accountId]);
   return (
     <AuthenticatedLayout>
       <Table mt="6em" variant="simple">
@@ -46,8 +46,8 @@ const History = () => {
         <Tbody>
           {contractList.map((contract: Contract) => (
             <ContractComponent
-              id={contract.id}
-              roomId={contract.id}
+              contractId={contract.contractId}
+              roomId={contract.roomId}
               startTime={contract.startTime}
               endTime={contract.endTime}
               status={contract.status}

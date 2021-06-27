@@ -27,13 +27,13 @@ export default function Home() {
     if (!userState.isFetching) {
       if (userState.role === Role.ADMIN) {
         history.push('/admin/rooms');
-      } else if (userState.role === Role.USER && userState.id) {
+      } else if (userState.role === Role.USER && userState.accountId) {
         dispatch(getRoomList());
       } else {
         history.push('/sign-in');
       }
     }
-  }, [userState.role, userState.isFetching, userState.id]);
+  }, [userState.role, userState.isFetching, userState.accountId]);
 
   return (
     <AuthenticatedLayout>
@@ -61,7 +61,7 @@ export default function Home() {
             {roomState.roomList.map((room: Room) => {
               return (
                 <RoomComponent
-                  id={room.id}
+                  roomId={room.roomId}
                   name={room.name}
                   price={room.price}
                   description={room.description}

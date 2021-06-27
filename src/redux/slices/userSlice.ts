@@ -6,7 +6,7 @@ import { authService } from '../../services';
 import { transformToLoginUser } from '../../utils/helper';
 
 interface UserState {
-  id: number;
+  accountId: string;
   email: string;
   username: string;
   age: number;
@@ -16,7 +16,7 @@ interface UserState {
 }
 
 const initialState = {
-  id: 0,
+  accountId: '',
   email: '',
   username: '',
   age: 0,
@@ -32,7 +32,7 @@ export const signIn = createAsyncThunk(
       const user = await authService.loginWithEmail(body);
       return user;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue((error as any).message);
     }
   },
 );
@@ -48,7 +48,6 @@ export const asyncSignOut = createAsyncThunk(
 export const getLoginUser = createAsyncThunk(
   'users/get_login/user',
   async (body, thunkAPI) => {
-    console.log('get login user');
     const loginUser = authService.getLoginUser();
     return loginUser;
   },
@@ -74,7 +73,6 @@ const { reducer, actions } = createSlice({
         state.isFetching = true;
       })
       .addCase(getLoginUser.fulfilled, (state, action) => {
-        console.log('get login user fulfill');
         state.isFetching = false;
         if (action.payload !== null) {
           Object.assign(state, action.payload);

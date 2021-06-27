@@ -13,34 +13,37 @@ export class AuthGateway {
   private jwt: string | null;
 
   constructor(options: { restConnector: AxiosInstance }) {
-    this.jwt = null;
+    this.jwt = localStorage.getItem(ACCESS_TOKEN);
     this.restConnector = options.restConnector;
 
     this.loadAccessToken();
   }
 
   public async signUp(body: ISignUpForm) {
-    return await this.restConnector.post('/sign_up', body);
+    return await this.restConnector.post('/sign-up', body);
   }
 
   public async loginWithEmail(body: {
     email: string;
     password: string;
   }): Promise<{ token: string }> {
-    const { data } = await this.restConnector.post('/sign_in', body);
-    return { token: data.token };
+    const { data } = await this.restConnector.post('/sign-in', body);
+    return data;
   }
 
   public getLoginUser(): LoginUser | null {
-    if (!this.jwt) {
+    if (!localStorage.getItem(ACCESS_TOKEN)) {
       return null;
+    } else {
+      this.jwt = localStorage.getItem(ACCESS_TOKEN);
     }
 
     try {
-      const payload = getDecodedPayload(this.jwt);
+      const payload = getDecodedPayload(this.jwt!);
 
       return transformToLoginUser(payload);
     } catch (error) {
+      console.log('load jwt error : ', error);
       return null;
     }
   }
@@ -53,9 +56,7 @@ export class AuthGateway {
     if (token) {
       this.jwt = token;
       localStorage.setItem(ACCESS_TOKEN, token);
-      this.restConnector.defaults.headers[
-        AUTHORIZATION_HEADER
-      ] = `Bearer ${token}`;
+      this.restConnector.defaults.headers[AUTHORIZATION_HEADER] = `${token}`;
     } else {
       this.jwt = null;
       localStorage.removeItem(ACCESS_TOKEN);
@@ -69,18 +70,6 @@ export class AuthGateway {
     this.jwt = accessToken;
     this.restConnector.defaults.headers[
       AUTHORIZATION_HEADER
-    ] = `Bearer ${accessToken}`;
+    ] = `${accessToken}`;
   }
-
-  // public async changePassword(
-  //   body: {accountId: string, newPassword: string, resetPasswordToken: string},
-  //   accessToken: string,
-  // ): Promise<void> {
-  //   const {newPassword} = body;
-  //   this.setAccessToken(accessToken);
-  //   await this.restConnector.post(`/accounts/change-password?=${accessToken}`, {
-  //     newPassword,
-  //     newPasswordConfirm,
-  //   });
-  // }
 }

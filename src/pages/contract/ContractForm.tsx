@@ -20,12 +20,12 @@ import { createContract } from '../../redux/slices/roomSlice';
 import { useEffect } from 'react';
 import { unwrapResult } from '@reduxjs/toolkit';
 
-interface ContractForm {
-  userId: number;
+interface ContractFormProps {
+  accountId: string;
   email: string;
   phone: string;
   age: number;
-  roomId: number;
+  roomId: string;
   startTime: Date;
   endTime: Date;
   pricePerDay: number;
@@ -46,10 +46,13 @@ const CustomerInfo = () => {
   const userState = useAppSelector((state) => state.user);
   const { roomSelected, errorMessage } = useAppSelector((state) => state.room);
 
-  if (!roomSelected?.id) {
+  if (!roomSelected?.roomId) {
     return <Redirect to="/" />;
   }
-  const handleCreateContract = async (values: ContractForm, actions: any) => {
+  const handleCreateContract = async (
+    values: ContractFormProps,
+    actions: any,
+  ) => {
     actions.setSubmitting(true);
     try {
       const daysStay = dayDiff(
@@ -59,8 +62,8 @@ const CustomerInfo = () => {
 
       const resultAction = await dispatch(
         createContract({
-          userId: userState.id,
-          roomId: roomSelected.id,
+          userId: userState.accountId,
+          roomId: roomSelected.roomId,
           price: values.pricePerDay * daysStay,
           startTime: values.startTime,
           endTime: values.endTime,
@@ -100,17 +103,17 @@ const CustomerInfo = () => {
         <Formik
           initialValues={{
             email: userState.email,
-            userId: userState.id,
+            accountId: userState.accountId,
             phone: userState.phone,
             age: userState.age,
             startTime: new Date(),
             endTime: new Date(),
             pricePerDay: roomSelected.price,
-            roomId: roomSelected.id,
+            roomId: roomSelected.roomId,
           }}
           validationSchema={contractValidationSchema}
           onSubmit={handleCreateContract}>
-          {(props: FormikProps<ContractForm>): JSX.Element => (
+          {(props: FormikProps<ContractFormProps>): JSX.Element => (
             <form onSubmit={props.handleSubmit}>
               <Box display="flex" alignItems="flex-start">
                 <Box>

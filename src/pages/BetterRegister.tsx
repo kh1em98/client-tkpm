@@ -7,16 +7,16 @@ import { useAppSelector } from '../redux/store';
 import SignUpForm from './betterRegister/SignUpForm';
 
 const BetterRegister = () => {
-  const { isFetching, id } = useAppSelector((state) => state.user);
+  const { isFetching, accountId } = useAppSelector((state) => state.user);
   const history = useHistory();
 
   useEffect(() => {
     if (!isFetching) {
-      if (id) {
+      if (accountId) {
         history.push('/');
       }
     }
-  }, [isFetching, id]);
+  }, [isFetching, accountId]);
 
   return isFetching ? (
     <Spinner />

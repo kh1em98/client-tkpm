@@ -1,5 +1,9 @@
 import { AxiosInstance } from 'axios';
-import { Contract, ContractStatus } from '../models/Contract';
+import {
+  Contract,
+  ContractStatus,
+  ContractCreateInput,
+} from '../models/Contract';
 
 export class ContractGateway {
   private restConnector: AxiosInstance;
@@ -9,30 +13,29 @@ export class ContractGateway {
   }
 
   public async getList(): Promise<Array<Contract>> {
-    const { data } = await this.restConnector.get('/get_contract_list');
+    const { data } = await this.restConnector.get('/contract/list');
     return data;
   }
 
-  public async create(contract: Contract): Promise<Contract> {
-    const { data } = await this.restConnector.post(
-      '/create_contract',
-      contract,
-    );
+  public async create(contract: ContractCreateInput): Promise<Contract> {
+    const { data } = await this.restConnector.post('/contract', contract);
     return data;
   }
 
-  public async approve(contractId: number): Promise<void> {
-    const { data } = await this.restConnector.post('/update_contract', {
+  public async approve(contractId: string, userId: string): Promise<void> {
+    const { data } = await this.restConnector.put('/contract', {
       id: contractId,
-      status: ContractStatus.SUCCESS,
+      status: ContractStatus.COMPLETED,
+      adminId: userId,
     });
     return data;
   }
 
-  public async reject(contractId: number): Promise<void> {
-    const { data } = await this.restConnector.post('/update_contract', {
-      id: contractId,
-      status: ContractStatus.REJECTED,
+  public async reject(contractId: string, userId: string): Promise<void> {
+    const { data } = await this.restConnector.put('/contract', {
+      contractId,
+      status: ContractStatus.CANCEL,
+      adminId: userId,
     });
     return data;
   }

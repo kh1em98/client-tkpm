@@ -5,7 +5,7 @@ import { RoomStatus } from '../models/Room';
 import { formatToVnd } from '../utils/helper';
 
 interface RoomProps {
-  id?: number;
+  roomId?: string;
   price: number;
   image: string;
   name: string;
@@ -17,7 +17,7 @@ interface RoomProps {
 }
 
 const Room: FC<RoomProps> = ({
-  id,
+  roomId,
   price,
   image,
   name,
@@ -41,7 +41,7 @@ const Room: FC<RoomProps> = ({
       borderRadius="12px"
       overflow="hidden"
       mb="2em"
-      onClick={() => onSelectRoom(id)}>
+      onClick={() => onSelectRoom(roomId)}>
       <Image src={image} objectFit="cover" width="448px" height="432px" />
 
       <Box padding="1em 1.5em" paddingBottom="1.5em">

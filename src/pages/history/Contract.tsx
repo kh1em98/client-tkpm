@@ -1,29 +1,27 @@
+import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { Badge, IconButton, Td, Tr } from '@chakra-ui/react';
 import React, { FC } from 'react';
-import { formattedDate } from '../../utils/date';
-import { RoomStatus } from '../../models/Room';
+import { Role } from '../../models/Account';
 import { ContractStatus } from '../../models/Contract';
 import { useAppSelector } from '../../redux/store';
-import { Role } from '../../models/Account';
-import { CloseIcon, CheckIcon } from '@chakra-ui/icons';
-import { contractService } from '../../services/index';
+import { formattedDate } from '../../utils/date';
 
 interface ContractProps {
-  id?: number;
-  roomId?: number;
+  contractId?: string;
+  roomId?: string;
   startTime?: Date;
   endTime?: Date;
   status?: string;
-  onApprove?: (id: number) => {};
-  onReject?: (id: number) => {};
+  onApprove?: (contractId: string) => {};
+  onReject?: (contractId: string) => {};
 }
 
 const Contract: FC<ContractProps> = ({
-  id = 1,
-  roomId = 2,
+  contractId,
+  roomId,
   startTime = new Date('2021-06-26T07:59:00.000Z'),
   endTime = new Date('2021-06-28T07:59:00.000Z'),
-  status = ContractStatus.SUCCESS,
+  status = ContractStatus.COMPLETED,
   onApprove,
   onReject,
 }) => {
@@ -31,7 +29,7 @@ const Contract: FC<ContractProps> = ({
 
   return (
     <Tr _hover={{ bg: '#F6F6FE', cursor: 'pointer' }}>
-      <Td>#{id}</Td>
+      <Td>#{contractId}</Td>
       <Td>{roomId}</Td>
       <Td>{formattedDate(startTime)}</Td>
       <Td>{formattedDate(endTime)}</Td>
@@ -42,7 +40,7 @@ const Contract: FC<ContractProps> = ({
               colorScheme="green"
               aria-label="Call Segun"
               size="sm"
-              onClick={() => onApprove!(id)}
+              onClick={() => onApprove!(contractId!)}
               icon={<CheckIcon />}
             />
             <IconButton
@@ -50,16 +48,16 @@ const Contract: FC<ContractProps> = ({
               aria-label="Call Segun"
               size="sm"
               ml="1em"
-              onClick={() => onReject!(id)}
+              onClick={() => onReject!(contractId!)}
               icon={<CloseIcon />}
             />
           </>
         ) : (
           <Badge
             colorScheme={
-              status === ContractStatus.SUCCESS
+              status === ContractStatus.COMPLETED
                 ? 'green'
-                : status === ContractStatus.PROGRESSING
+                : status === ContractStatus.PROCESSING
                 ? 'yellow'
                 : 'red'
             }>

@@ -15,30 +15,17 @@ export class RoomGateway {
   }
 
   public async getList(): Promise<Array<Room>> {
-    const { data } = await this.restConnector.get('/get_room_list');
+    const { data } = await this.restConnector.get('/room/list');
     return data;
   }
 
   public async create(room: IRoomForm): Promise<Room> {
-    const { data } = await this.restConnector.post('/create_room', room);
-    return data;
-  }
-
-  public async book(updatedRoom: Room): Promise<void> {
-    const { data } = await this.restConnector.post('/update_room', updatedRoom);
+    const { data } = await this.restConnector.post('/room', room);
     return data;
   }
 
   public async getById(id: number): Promise<Room> {
-    const { data } = await this.restConnector.get(`/get_room_by_id/${id}`);
-    return data;
-  }
-
-  public async createContract(contract: Contract): Promise<Contract> {
-    const { data } = await this.restConnector.post(
-      '/create_contract',
-      contract,
-    );
+    const { data } = await this.restConnector.get(`/room?roomId=${id}`);
     return data;
   }
 }

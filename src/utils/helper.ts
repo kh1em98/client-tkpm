@@ -1,15 +1,9 @@
 import _ from 'lodash';
 import { LoginUser, Account } from '../models/Account';
 
-export const getDecodedPayload = (jwt: string) => {
-  const dotPosition = jwt.indexOf('.');
-  const nextDotPosition = jwt.lastIndexOf('.');
-
-  console.log({ dotPosition, nextDotPosition });
-
-  let payload: any = window.atob(
-    jwt.substring(dotPosition + 1, nextDotPosition),
-  );
+export const getDecodedPayload = (token: string) => {
+  console.log('token : ', token);
+  let payload: any = window.atob(token);
   payload = JSON.parse(payload);
 
   return payload;
@@ -17,7 +11,7 @@ export const getDecodedPayload = (jwt: string) => {
 
 export const transformToLoginUser = (obj) => {
   return _.pick(obj, [
-    'id',
+    'accountId',
     'email',
     'username',
     'age',

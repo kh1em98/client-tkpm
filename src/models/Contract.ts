@@ -1,15 +1,23 @@
 export enum ContractStatus {
-  SUCCESS = 'success',
-  PROGRESSING = 'progressing',
-  REJECTED = 'rejected',
+  COMPLETED = 'Success',
+  PROCESSING = 'Processing',
+  CANCEL = 'Cancel',
 }
 
 export interface Contract {
-  id?: number;
-  userId: number;
-  roomId: number;
+  contractId: string;
+  userId: string;
+  roomId: string;
   price: number;
   status?: ContractStatus;
   startTime: Date;
   endTime: Date;
+}
+
+export interface ContractCreateInput {
+  userId: string;
+  roomId: string;
+  startTime: Date;
+  endTime: Date;
+  price: number;
 }

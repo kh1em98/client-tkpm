@@ -7,16 +7,16 @@ import { Spinner } from '@chakra-ui/react';
 import { useHistory } from 'react-router';
 
 const BetterLogin = () => {
-  const { isFetching, id } = useAppSelector((state) => state.user);
+  const { isFetching, accountId } = useAppSelector((state) => state.user);
   const history = useHistory();
 
   useEffect(() => {
     if (!isFetching) {
-      if (id) {
+      if (accountId) {
         history.push('/');
       }
     }
-  }, [isFetching, id]);
+  }, [isFetching, accountId]);
 
   return isFetching ? (
     <Spinner />

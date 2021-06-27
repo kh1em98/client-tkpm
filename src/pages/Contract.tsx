@@ -8,17 +8,17 @@ import { Role } from '../models/Account';
 import { useHistory } from 'react-router';
 
 const Contract = () => {
-  const { isFetching, role, id } = useAppSelector((state) => state.user);
+  const { isFetching, role, accountId } = useAppSelector((state) => state.user);
   const history = useHistory();
 
   useEffect(() => {
     if (!isFetching) {
-      if (role === Role.USER && id) {
+      if (role === Role.USER && accountId) {
       } else {
         history.push('/sign-in');
       }
     }
-  }, [isFetching, role, id]);
+  }, [isFetching, role, accountId]);
 
   return (
     <AuthenticatedLayout>

@@ -4,8 +4,8 @@ export interface LoginCredentials {
 }
 
 export enum Role {
-  ADMIN = 'admin',
-  USER = 'user',
+  ADMIN = 'Admin',
+  USER = 'User',
 }
 
 export enum AccountStatus {
@@ -14,7 +14,7 @@ export enum AccountStatus {
 }
 
 export interface Account {
-  id: string;
+  accountId: string;
   email: string;
   username: string;
   age: number;
